@@ -1,0 +1,24 @@
+{
+  "name": "jayjaytwitch",
+  "version": "1.0.0",
+  "description": "A Twitch bot for https://twitch.tv/JakeJack",
+  "main": "bot.js",
+  "scripts": {
+    "start": "node bot.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jakejack13/JayJayTwitch.git"
+  },
+  "author": "Jacob Kerr",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jakejack13/JayJayTwitch/issues"
+  },
+  "homepage": "https://github.com/jakejack13/JayJayTwitch#readme",
+  "dependencies": {
+    "dotenv": "^10.0.0",
+    "tmi.js": "^1.8.5"
+  }
+}
