@@ -3,7 +3,6 @@
 require('dotenv').config();
 const tmi = require('tmi.js');
 const { HashCounter } = require('hashcounter');
-const { WindowWrapper } = require('./lib/windowwrapper');
 
 // Define configuration options
 const opts = {
@@ -17,7 +16,6 @@ const opts = {
 };
 
 const counter = new HashCounter();
-const window = new WindowWrapper();
 
 // Create a client with our options
 const client = new tmi.client(opts);
@@ -30,13 +28,21 @@ client.on('connected', onConnectedHandler);
 client.connect();
 
 /**
+ * An interface for the UserState object coming back from Twitch
+ * TODO: Update with new fields as found
+ */
+interface UserState {
+  "display-name": string
+}
+
+/**
  * Fires when message sent to chat and detects if new chatter
  * @param {string} channel channel name
- * @param {object} userstate state of the chatting user
+ * @param {UserState} userstate state of the chatting user
  * @param {string} message message sent by user
  * @param {boolean} self if message was sent by bot
  */
-function onChatHandler (channel, userstate, message, self) {
+function onChatHandler (channel: string, userstate: UserState, message: string, self: boolean) {
   if (self) { return; } // Ignore messages from the bot
 
   const senderName = userstate["display-name"];
@@ -44,7 +50,6 @@ function onChatHandler (channel, userstate, message, self) {
   // If chatter new
   if (counter.get(senderName) == 0) {
     console.log(`* New chatter: ${senderName}`);
-    window.display(senderName);
   } else { // If chatter old
     console.log(`* Old chatter: ${senderName}`);
   }
@@ -53,10 +58,10 @@ function onChatHandler (channel, userstate, message, self) {
 }
 
 /**
- * 
- * @param {*} addr 
- * @param {*} port 
+ * Print connection information (address and port)
+ * @param {string} addr 
+ * @param {string} port 
  */
-function onConnectedHandler (addr, port) {
+function onConnectedHandler (addr: string, port: string) {
   console.log(`* Connected to ${addr}:${port}`);
 }

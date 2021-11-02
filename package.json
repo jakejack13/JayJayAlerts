@@ -2,10 +2,10 @@
   "name": "jayjaytwitch",
   "version": "1.0.0",
   "description": "A Twitch bot for https://twitch.tv/JakeJack",
-  "main": "bot.js",
+  "main": "build/bot.js",
   "scripts": {
-    "start": "node bot.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "NODE_PATH=./build node build/bot.js",
+    "build": "tsc -p ."
   },
   "repository": {
     "type": "git",
@@ -21,5 +21,9 @@
     "dotenv": "^10.0.0",
     "hashcounter": "^1.0.0",
     "tmi.js": "^1.8.5"
+  },
+  "devDependencies": {
+    "@types/node": "^16.11.6",
+    "typescript": "^4.4.4"
   }
 }
