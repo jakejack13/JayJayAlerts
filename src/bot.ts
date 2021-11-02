@@ -1,8 +1,7 @@
-//@ts-check
-
 require('dotenv').config();
 const tmi = require('tmi.js');
 const { HashCounter } = require('hashcounter');
+const animations = require('./animations');
 
 // Define configuration options
 const opts = {
@@ -37,10 +36,10 @@ interface UserState {
 
 /**
  * Fires when message sent to chat and detects if new chatter
- * @param {string} channel channel name
- * @param {UserState} userstate state of the chatting user
- * @param {string} message message sent by user
- * @param {boolean} self if message was sent by bot
+ * @param channel channel name
+ * @param userstate state of the chatting user
+ * @param message message sent by user
+ * @param self if message was sent by bot
  */
 function onChatHandler (channel: string, userstate: UserState, message: string, self: boolean) {
   if (self) { return; } // Ignore messages from the bot
@@ -50,6 +49,8 @@ function onChatHandler (channel: string, userstate: UserState, message: string, 
   // If chatter new
   if (counter.get(senderName) == 0) {
     console.log(`* New chatter: ${senderName}`);
+    client.say(channel, `Hello, ${senderName}`);
+    animations.queueName(senderName);
   } else { // If chatter old
     console.log(`* Old chatter: ${senderName}`);
   }
@@ -59,8 +60,8 @@ function onChatHandler (channel: string, userstate: UserState, message: string, 
 
 /**
  * Print connection information (address and port)
- * @param {string} addr 
- * @param {string} port 
+ * @param addr 
+ * @param port 
  */
 function onConnectedHandler (addr: string, port: string) {
   console.log(`* Connected to ${addr}:${port}`);
