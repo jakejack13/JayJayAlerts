@@ -20,7 +20,10 @@ const counter = new HashCounter();
 const client = new tmi.client(opts);
 
 // Register our event handlers (defined below)
-client.on('chat', onChatHandler);
+client.on('chat', 
+                async (channel: string, userstate: UserState, message: string, self: boolean) => 
+                {await onChatHandler(channel, userstate, message, self)}
+          );
 client.on('connected', onConnectedHandler);
 
 // Connect to Twitch
@@ -41,7 +44,7 @@ interface UserState {
  * @param message message sent by user
  * @param self if message was sent by bot
  */
-function onChatHandler (channel: string, userstate: UserState, message: string, self: boolean) {
+async function onChatHandler (channel: string, userstate: UserState, message: string, self: boolean) {
   if (self) { return; } // Ignore messages from the bot
 
   const senderName = userstate["display-name"];
@@ -50,7 +53,7 @@ function onChatHandler (channel: string, userstate: UserState, message: string, 
   if (counter.get(senderName) == 0) {
     console.log(`* New chatter: ${senderName}`);
     client.say(channel, `Hello, ${senderName}`);
-    animations.queueName(senderName);
+    await animations.queueName(senderName);
   } else { // If chatter old
     console.log(`* Old chatter: ${senderName}`);
   }

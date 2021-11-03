@@ -21,6 +21,7 @@
   "dependencies": {
     "copyfiles": "^2.4.1",
     "dotenv": "^10.0.0",
+    "embedded-queue": "^0.0.9",
     "hashcounter": "^1.0.0",
     "tmi.js": "^1.8.5"
   },
