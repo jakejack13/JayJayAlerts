@@ -105,3 +105,6 @@ dist
 
 # TypeScript build directory
 build/
+
+# vscode directory
+.vscode/

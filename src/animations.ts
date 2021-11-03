@@ -1,49 +1,28 @@
-const EmbeddedQueue = require("embedded-queue");
+const queue = require('queue');
 const { log } = require('./debug');
 
-var queue: any;
-
-interface StringData {
-    "str": string
-}
-
-interface Job {
-    "type": string,
-    "data": StringData
-}
-
-// Start the queue with the correct type of job
-(async () => {
-    // argument path through nedb
-    queue = await EmbeddedQueue.Queue.createQueue({ inMemoryOnly: true });
-
-    // set up job processor for "adder" type, concurrency is 1
-    queue.process(
-        "show",
-        async (job: Job) => {
-            const element = document.getElementById("name");
-            const time = 5000;
-            if (element) {
-                // log(name);
-                element.innerText = job.data.str;
-                element.style.opacity = "1.0";
-                setTimeout(function() {
-                    element.style.opacity = "0.0";
-                }, time);
-            }},
-        1
-    );
-})();
-
+const q = queue({concurrency: true, autostart: true});
 
 /**
  * Queues the name for display
  * @param name the name to queue
  */
-exports.queueName = async function(name: string) {
-    let job : Job = {
-        type: "show",
-        data: { str: name },
+exports.queueName = function(name: string) {
+    q.push(function(cb: ((err: Error | null, result: any) => (void))) {
+        showName(name);
+        cb(null, null);
+    });
+}
+
+let showName = async function(name: string) {
+    const element = document.getElementById("name");
+    const time = 5000;
+    if (element) {
+        // log(name);
+        element.innerText = name;
+        element.style.opacity = "1.0";
+        setTimeout(function() {
+            element.style.opacity = "0.0";
+        }, time);
     }
-    await queue.createJob(job);
 }
