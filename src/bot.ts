@@ -1,7 +1,7 @@
 require('dotenv').config();
 const tmi = require('tmi.js');
 const { HashCounter } = require('hashcounter');
-const animations = require('./animations');
+const { queueMessage } = require('./animations');
 
 // Define configuration options
 const opts = {
@@ -42,17 +42,14 @@ interface UserState {
  * @param self if message was sent by bot
  */
 function onChatHandler (channel: string, userstate: UserState, message: string, self: boolean) {
-    // if (self) { return; } // Ignore messages from the bot
+    if (self) { return; } // Ignore messages from the bot
 
     const senderName = userstate["display-name"];
   
     // If chatter new
     if (counter.get(senderName) == 0) {
-      console.log(`* New chatter: ${senderName}`);
       client.say(channel, `Hello, ${senderName}`);
-      animations.queueMessage(senderName);
-    } else { // If chatter old
-      console.log(`* Old chatter: ${senderName}`);
+      queueMessage(senderName);
     }
   
     counter.add(senderName); // Add user to counter
