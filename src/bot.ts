@@ -50,7 +50,7 @@ function onChatHandler (channel: string, userstate: UserState, message: string, 
     if (counter.get(senderName) == 0) {
       console.log(`* New chatter: ${senderName}`);
       client.say(channel, `Hello, ${senderName}`);
-      animations.queueName(senderName);
+      animations.queueMessage(senderName);
     } else { // If chatter old
       console.log(`* Old chatter: ${senderName}`);
     }
