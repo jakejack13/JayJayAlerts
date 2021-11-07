@@ -1,7 +1,7 @@
 require('dotenv').config();
 const tmi = require('tmi.js');
 const { HashCounter } = require('hashcounter');
-const { queueMessage } = require('./animations');
+const { displayMessage } = require('./animations');
 
 // Define configuration options
 const opts = {
@@ -34,6 +34,10 @@ interface UserState {
   "display-name": string
 }
 
+function getRandomInt(max: number) {
+  return Math.floor(Math.random() * max);
+}
+
 /**
  * Fires when message sent to chat and detects if new chatter
  * @param channel channel name
@@ -42,17 +46,19 @@ interface UserState {
  * @param self if message was sent by bot
  */
 function onChatHandler (channel: string, userstate: UserState, message: string, self: boolean) {
-    if (self) { return; } // Ignore messages from the bot
-
-    const senderName = userstate["display-name"];
+  const senderName = userstate["display-name"];  
+  if (self || senderName === opts.identity.username) { return; } // Ignore messages from the bot
   
-    // If chatter new
-    if (counter.get(senderName) == 0) {
-      client.say(channel, `Hello, ${senderName}`);
-      queueMessage(senderName);
-    }
-  
-    counter.add(senderName); // Add user to counter
+  // switch (message.split(" ")[0]) {
+  //   case "!message":
+  //     showMessage(channel, userstate, message, self);
+  //     break;
+  // }
+  // newChatter(channel, userstate, message, self);
+  const randInt = getRandomInt(20);
+  if (randInt == 0) {
+    displayMessage(message);
+  }
 }
 
 /**
@@ -62,4 +68,20 @@ function onChatHandler (channel: string, userstate: UserState, message: string, 
  */
 function onConnectedHandler (addr: string, port: string) {
   console.log(`* Connected to ${addr}:${port}`);
+}
+
+function newChatter (channel: string, userstate: UserState, message: string, self: boolean) {
+  const senderName = userstate["display-name"]; 
+  // If chatter new
+  if (counter.get(senderName) == 0) {
+    client.say(channel, `Hello, ${senderName}`);
+    displayMessage(senderName);
+  }
+
+  counter.add(senderName); // Add user to counter
+}
+
+function showMessage (channel: string, userstate: UserState, message: string, self: boolean) {
+  const userMessage = message.split(" ").slice(1).join(" ");
+  displayMessage(userMessage);
 }
