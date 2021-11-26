@@ -1,7 +1,7 @@
 require('dotenv').config();
 const tmi = require('tmi.js');
 const { HashCounter } = require('hashcounter');
-const { displayMessage } = require('./animations');
+const { displayMessages, queueMessage } = require('./animations');
 
 // Define configuration options
 const opts = {
@@ -55,10 +55,11 @@ function onChatHandler (channel: string, userstate: UserState, message: string, 
   //     break;
   // }
   // newChatter(channel, userstate, message, self);
-  const randInt = getRandomInt(20);
-  if (randInt == 0) {
-    displayMessage(message);
-  }
+  // const randInt = getRandomInt(20);
+  // if (randInt == 0) {
+  //   queueMessage(message);
+  // }
+  queueMessage(message);
 }
 
 /**
@@ -75,7 +76,7 @@ function newChatter (channel: string, userstate: UserState, message: string, sel
   // If chatter new
   if (counter.get(senderName) == 0) {
     client.say(channel, `Hello, ${senderName}`);
-    displayMessage(senderName);
+    queueMessage(senderName);
   }
 
   counter.add(senderName); // Add user to counter
@@ -83,5 +84,5 @@ function newChatter (channel: string, userstate: UserState, message: string, sel
 
 function showMessage (channel: string, userstate: UserState, message: string, self: boolean) {
   const userMessage = message.split(" ").slice(1).join(" ");
-  displayMessage(userMessage);
+  queueMessage(userMessage);
 }

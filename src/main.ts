@@ -1,35 +1,17 @@
-// Modules to control application life and create native browser window
-const { app, BrowserWindow } = require('electron'); 
-const path = require('path'); 
+const http = require('http');
+const express = require('express');
+const path = require('path');
+const ex_app = express();
 
-function createWindow () {
-  // Create the browser window.
-  const mainWindow = new BrowserWindow({
-    width: 400,
-    height: 300,
-    webPreferences: {
-      preload: path.join(__dirname, 'bot.js')
-    }
-  }); // Window properties
+const bot = require('./bot')
 
-  mainWindow.loadFile('static/index.html'); // Load html file as screen
-}
-
-// This method will be called when Electron has finished
-// initialization and is ready to create browser windows.
-app.whenReady().then(() => {
-  createWindow(); 
-
-  app.on('activate', function () {
-    // On macOS it's common to re-create a window in the app when the
-    // dock icon is clicked and there are no other windows open.
-    if (BrowserWindow.getAllWindows().length === 0) createWindow();
-  }); 
-}); 
-
-// Quit when all windows are closed, except on macOS. There, it's common
-// for applications and their menu bar to stay active until the user quits
-// explicitly with Cmd + Q.
-app.on('window-all-closed', function () {
-  if (process.platform !== 'darwin') app.quit()
-}); 
+ex_app.use(express.json());
+ex_app.use(express.static("express"));
+// default URL for website
+ex_app.use('/', function(req: any,res: any){
+    res.sendFile(path.join(__dirname, '../static/index.html'));
+  });
+const server = http.createServer(ex_app);
+const port = 3000;
+server.listen(port);
+console.debug('Server listening on port ' + port);

@@ -5,6 +5,7 @@
   "main": "build/main.js",
   "scripts": {
     "start": "npm run build && electron .",
+    "express": "npm run build && node build/main.js",
     "build": "tsc -p .",
     "test": "npm run build && node build/bot.js"
   },
@@ -21,13 +22,12 @@
   "dependencies": {
     "copyfiles": "^2.4.1",
     "dotenv": "^10.0.0",
+    "express": "^4.17.1",
     "hashcounter": "^1.0.0",
     "tmi.js": "^1.8.5"
   },
   "devDependencies": {
     "@types/node": "^16.11.6",
-    "@types/tmi.js": "^1.8.0",
-    "electron": "^15.3.0",
-    "typescript": "^4.4.4"
+    "@types/tmi.js": "^1.8.0"
   }
 }
