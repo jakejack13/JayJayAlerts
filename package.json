@@ -4,10 +4,8 @@
   "description": "A Twitch bot for https://twitch.tv/JakeJack",
   "main": "build/main.js",
   "scripts": {
-    "start": "npm run build && electron .",
-    "express": "npm run build && node build/main.js",
-    "build": "tsc -p .",
-    "test": "npm run build && node build/bot.js"
+    "start": "node src/main.js",
+    "test": "node src/bot.js"
   },
   "repository": {
     "type": "git",
@@ -23,7 +21,6 @@
     "copyfiles": "^2.4.1",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
-    "hashcounter": "^1.0.0",
     "tmi.js": "^1.8.5"
   },
   "devDependencies": {

@@ -1,14 +1,20 @@
-const { log } = require('./debug');
+var messages = [];
+var lock = false;
 
-var messages: string[] = [];
-var lock: boolean = false;
-
-export function queueMessage(message: string) {
+/**
+ * Queues the message to be shodisplayedwn
+ * @param {string} message - the message to queue 
+ */
+export function queueMessage(message) {
     messages.push(message);
     displayMessages();
 }
 
-export function displayMessages() {
+/**
+ * Displays the messages in the order they appear in the queue and continues
+ * until the queue is empty
+ */
+function displayMessages() {
     if (lock) {
         setTimeout(displayMessages, 1000);
     } else {
