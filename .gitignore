@@ -108,3 +108,6 @@ build/
 
 # vscode directory
 .vscode/
+
+# Database data
+database/data/
