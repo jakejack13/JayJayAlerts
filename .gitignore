@@ -110,4 +110,4 @@ build/
 .vscode/
 
 # Database data
-database/data/
+data/

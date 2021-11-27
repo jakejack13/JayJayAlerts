@@ -1,6 +1,8 @@
 require('dotenv').config();
 const tmi = require('tmi.js');
-const { CHANNELS } = require('../database/channels');
+const channels = require('../database/lib/channels');
+
+channels.loadChannels();
 
 // Configurations
 const opts = {
@@ -8,7 +10,7 @@ const opts = {
         username: process.env.BOT_USERNAME,
         password: process.env.OAUTH_TOKEN
     },
-    channels: CHANNELS
+    channels: channels.CHANNELS
 };
 
 // Create a client with our options
@@ -29,5 +31,3 @@ client.connect();
 function onConnectedHandler (addr, port) {
     console.log(`* Connected to ${addr}:${port}`);
 }
-
-
