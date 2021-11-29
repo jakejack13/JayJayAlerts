@@ -11,9 +11,8 @@ const CHANNELFILE = path.join(__dirname, "../data/channels.txt");
  */
 export var CHANNELS = [];
 
-
 /**
- * Loads the list of channels from channels.txt 
+ * Loads the list of channegls from channels.txt 
  */
 export function loadChannels() {
     const data = fs.readFileSync(CHANNELFILE, 'utf8');
