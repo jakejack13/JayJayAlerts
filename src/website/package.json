@@ -1,0 +1,14 @@
+{
+    "name": "jayjaytwitch-website",
+    "main": "app.js",
+    "scripts": {
+        "start": "node app.js"
+    },
+    "author": "Jacob Kerr",
+    "license": "MIT",
+    "dependencies": {
+    },
+    "devDependencies": {
+        "@types/node": "^16.11.6"
+    }
+}
