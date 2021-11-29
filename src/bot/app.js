@@ -22,7 +22,6 @@ client.on('connected', onConnectedHandler);
 // Connect to Twitch
 client.connect();
 
-
 /**
  * Print connection information (address and port)
  * @param {string} addr - the connected IP address

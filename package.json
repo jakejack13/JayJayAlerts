@@ -4,10 +4,10 @@
   "description": "A Twitch bot for https://twitch.tv/JakeJack",
   "main": "src/main.js",
   "scripts": {
-    "bot": "node src/bot/app.js",
-    "client": "node src/client/app.js",
-    "database": "node src/database/app.js",
-    "website": "node src/website/app.js",
+    "bot": "cd src/bot && npm start",
+    "client": "cd src/client && npm start",
+    "database": "cd src/database && npm start",
+    "website": "cd src/website && npm start",
     "postinstall": "./scripts/postinstall.sh"
   },
   "repository": {

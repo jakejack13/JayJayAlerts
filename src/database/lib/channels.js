@@ -9,12 +9,12 @@ const CHANNELFILE = path.join(__dirname, "../data/channels.txt");
 /**
  * The list of channels to connect to
  */
-export var CHANNELS = [];
+var CHANNELS = [];
 
 /**
- * Loads the list of channegls from channels.txt 
+ * Loads the database of channels from channels.txt 
  */
-export function loadChannels() {
+exports.loadChannels = function() {
     const data = fs.readFileSync(CHANNELFILE, 'utf8');
     const servers = data.split(' ');
     CHANNELS = [];
@@ -25,11 +25,39 @@ export function loadChannels() {
 
 
 /**
- * Saves the list of channels to channels.txt
+ * Saves the database of channels to channels.txt
  */
-export function saveChannels() {
+exports.saveChannels = function() {
     let channelString = CHANNELS.join('\n');
     fs.writeFileSync(CHANNELFILE, channelString);
 }
 
-setInterval(saveChannels, 60000);
+
+/**
+ * Adds the channel to the database of channels
+ * @param {string} channel - the channel to add
+ */
+exports.addChannel = function(channel) {
+    if (!exports.containsChannel(channel)) {
+        CHANNELS.push(channel);
+    }
+}
+
+
+/**
+ * Removes the channel from the database of channels
+ * @param {string} channel - the channel to remove
+ */
+exports.removeChannel = function(channel) {
+    
+}
+
+
+/**
+ * Checks if the channel is contained in the database
+ * @param {string} channel - the channel to check
+ * @returns true if channel is contained in the database, false otherwise
+ */
+exports.containsChannel = function(channel) {
+    return CHANNELS.indexOf() > -1;
+}
