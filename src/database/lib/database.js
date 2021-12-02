@@ -1,10 +1,6 @@
 /**
- * database.js
- * The schema used for data passed between the database and other nodes
  * 
- * @author Jacob Kerr
  */
-
 
 /**
  * The fields stored in the database
@@ -12,5 +8,5 @@
  * Might not be necessary for other nodes to have access to this, only needs to
  * be checked by database for proper field access
  */
-exports.FIELDS = ['id','channelname'];
+ exports.FIELDS = ['id','channelname'];
 
