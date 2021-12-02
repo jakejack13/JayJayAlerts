@@ -1,12 +1,19 @@
 /**
+ * database.js
+ * The library used to generate new databases for the database node
  * 
+ * @author Jacob Kerr
  */
 
-/**
- * The fields stored in the database
- * TODO: Possibly move this to database node src
- * Might not be necessary for other nodes to have access to this, only needs to
- * be checked by database for proper field access
- */
- exports.FIELDS = ['id','channelname'];
+const storage = require('./storage');
+const schema = require('../../../lib/schema/database-schema');
 
+
+ /**
+  * Returns a new Database object with the field names as specified by the 
+  * database schema
+  * @returns new Database object
+  */
+exports.createDatabase = function () {
+    return new storage.Database(schema.FIELDS);
+}

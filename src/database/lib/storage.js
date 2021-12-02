@@ -9,7 +9,6 @@
 
 /**
  * A class representing an entry into the database
- * @public
  */
 exports.Entry = class {
 
@@ -57,7 +56,6 @@ exports.Entry = class {
 
 /**
  * A class representing a database
- * @public
  */
 exports.Database = class {
 
