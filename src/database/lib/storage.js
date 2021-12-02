@@ -33,7 +33,7 @@ exports.Entry = class {
      * field is invalid
      * @public
      */
-    getField(field) {
+    getValue(field) {
         if (field in this.fields) return this[field];
         return undefined;
     }
@@ -45,7 +45,7 @@ exports.Entry = class {
      * @returns {boolean} true if the field is valid, false otherwise
      * @public
      */
-    setField(field, value) {
+    setValue(field, value) {
         if (field in this.fields) {
             this[field] = value;
             return true;
@@ -97,7 +97,7 @@ exports.Database = class {
         if(!(id in this.ids)) return undefined;
         /** @type exports.Entry */
         let entry = this[id];
-        return entry.getField(field);
+        return entry.getValue(field);
     }
 
     /**
@@ -112,7 +112,25 @@ exports.Database = class {
         if(!(id in this.ids)) return false;
         /** @type exports.Entry */
         let entry = this[id];
-        return entry.setField(field);
+        return entry.setValue(field);
+    }
+
+    /**
+     * Checks if any entry in the database contains the specified value in the
+     * specified field
+     * @param {string} field - the field to find the value at
+     * @param {string} value - the value to find
+     * @returns {boolean} true if the value is found at that field, false 
+     * otherwise
+     */
+    isValue(field, value) {
+        for (let id in ids) {
+            /** @type {exports.Entry} */
+            let entry = this[id];
+            let foundvalue = entry.getValue(field);
+            if (foundvalue === value) return true;
+        }
+        return false;
     }
 
     /**

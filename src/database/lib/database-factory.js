@@ -1,5 +1,5 @@
 /**
- * database.js
+ * database-factory.js
  * The library used to generate new databases for the database node
  * 
  * @author Jacob Kerr
@@ -14,6 +14,6 @@ const schema = require('../../../lib/schema/database-schema');
   * database schema
   * @returns new Database object
   */
-exports.createDatabase = function () {
+exports.databaseFactory = function () {
     return new storage.Database(schema.FIELDS);
 }

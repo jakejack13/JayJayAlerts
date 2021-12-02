@@ -1,11 +1,10 @@
 const http = require('http');
 
-const channels = require('../database/lib/channels')
+const { databaseFactory } = require('./lib/database-factory');
+const dbschema = require('../../lib/schema/database-schema');
+const adschema = require('../../lib/schema/address-schema');
 
-const hostname = 'localhost';
-const port = 3000;
-
-var database = channels.channelContainsFactory();
+var database = databaseFactory();
 
 const server = http.createServer((req, res) => {
     let url = new URL(req.url, `http://${req.headers.host}`);
@@ -26,6 +25,6 @@ const server = http.createServer((req, res) => {
     }
 });
 
-server.listen(port, hostname, () => {
-    console.log(`Server running at http://${hostname}:${port}/`);
+server.listen(adschema.DATABASEPORT, adschema.HOSTNAME, () => {
+    console.log(`Server running at http://${adschema.HOSTNAME}:${adschema.DATABASEPORT}/`);
 });
