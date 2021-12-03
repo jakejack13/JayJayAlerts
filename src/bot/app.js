@@ -1,5 +1,11 @@
 //@ts-check
 
+/**
+ * app.js - Bot Node
+ * @file The entry point to hosting the bot node
+ * @author Jacob Kerr
+ */
+
 require('dotenv').config();
 const tmi = require('tmi.js');
 const http = require('http');
