@@ -9,6 +9,7 @@
 require('dotenv').config();
 const tmi = require('tmi.js');
 const http = require('http');
+
 const dbschema = require('../../lib/schema/database-schema');
 
 var channels = [];
@@ -24,6 +25,7 @@ req.on('error', error => {
 });
 
 
+/** @type {tmi.Options} */
 const opts = {
     identity: {
         username: process.env.BOT_USERNAME,
@@ -34,6 +36,7 @@ const opts = {
 
 const client = new tmi.client(opts);
 client.on('connected', onConnectedHandler);
+client.on('subscription', onSubscriptionHandler);
 client.connect();
 
 /**
@@ -43,4 +46,17 @@ client.connect();
  */
 function onConnectedHandler (addr, port) {
     console.log(`* Connected to ${addr}:${port}`);
+}
+
+
+/**
+ * Handles all subscription events detected from registered channels
+ * @param {string} channel
+ * @param {string} username
+ * @param {tmi.SubMethods} methods
+ * @param {string} message
+ * @param {tmi.SubUserstate} userstate
+ */
+function onSubscriptionHandler(channel, username, methods, message, userstate) {
+    if (!(channels.includes(channel))) return;
 }
