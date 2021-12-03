@@ -10,6 +10,7 @@ const tmi = require('tmi.js');
 const http = require('http');
 
 const dbschema = require('../../lib/schema/database-schema');
+const alschema = require('../../lib/schema/alerts-schema');
 
 var channels = [];
 
@@ -50,12 +51,22 @@ function onConnectedHandler (addr, port) {
 
 /**
  * Handles all subscription events detected from registered channels
- * @param {string} channel
- * @param {string} username
+ * @param {string} channel - the channel that was subscribed to
+ * @param {string} username - the name of the user who subscribed
  * @param {tmi.SubMethods} methods
- * @param {string} message
- * @param {tmi.SubUserstate} userstate
+ * @param {string} message - the message associated with the subscription
+ * @param {tmi.SubUserstate} userstate - the state of the user subscribing
  */
 function onSubscriptionHandler(channel, username, methods, message, userstate) {
     if (!(channels.includes(channel))) return;
+
+    const req = http.request(new URL(alschema.subscriptionRequest(channel, userstate['display-name'])), res => {
+        res.on('data', data => {
+            console.log(data)
+        });
+    });
+    
+    req.on('error', error => {
+        console.error(error)
+    });
 }
