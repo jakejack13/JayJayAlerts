@@ -9,7 +9,7 @@ const http = require('http');
 
 const { databaseFactory } = require('./lib/database-factory');
 const dbschema = require('../../lib/schema/database-schema');
-const adschema = require('../../lib/schema/address-schema');
+const adschema = require('../../lib/schema/addresses');
 
 var database = databaseFactory();
 
