@@ -1,25 +1,33 @@
+//@ts-check
+
 require('dotenv').config();
 const tmi = require('tmi.js');
-const channels = require('../database/lib/channels');
+const http = require('http');
+const dbschema = require('../../lib/schema/database-schema');
 
-channels.loadChannels();
+var channels = [];
 
-// Configurations
+const req = http.request(new URL(dbschema.fieldRequest('channel')), res => {
+    res.on('data', d => {
+        channels = d.split(',');
+    });
+});
+
+req.on('error', error => {
+    console.error(error)
+});
+
+
 const opts = {
     identity: {
         username: process.env.BOT_USERNAME,
         password: process.env.OAUTH_TOKEN
     },
-    channels: channels.CHANNELS
+    channels: channels
 };
 
-// Create a client with our options
 const client = new tmi.client(opts);
-
-// Register our event handlers (defined below)
 client.on('connected', onConnectedHandler);
-
-// Connect to Twitch
 client.connect();
 
 /**

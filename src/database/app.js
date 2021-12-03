@@ -66,6 +66,16 @@ const server = http.createServer((req, res) => {
                 res.end(`Done\n`);
             }
             break;
+        case dbschema.FIELD:
+            value = database.getField(url.searchParams.get('field'));
+            if (value === undefined) {
+                res.statusCode = 406;
+                res.end('Field not found\n');
+            } else {
+                res.statusCode = 200;
+                res.end(`${value.join(',')}\n`);
+            }
+            break;
         default:
             res.statusCode = 404;
             res.setHeader('Content-Type', 'text/plain');
@@ -74,5 +84,5 @@ const server = http.createServer((req, res) => {
 });
 
 server.listen(adschema.DATABASEPORT, adschema.HOSTNAME, () => {
-    console.log(`Server running at http://${adschema.HOSTNAME}:${adschema.DATABASEPORT}/`);
+    console.log(`* Server running at http://${adschema.HOSTNAME}:${adschema.DATABASEPORT}/`);
 });

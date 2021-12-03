@@ -153,4 +153,19 @@ exports.Database = class {
         this[id] = new exports.Entry(fieldvalues);
         return true;
     }
+
+    /**
+     * Returns a list of values from the specified field
+     * @param {string} field - the field to pull the values from
+     * @returns {string[]|undefined} the values in the field or undefined if 
+     * field does not exist
+     */
+    getField(field) {
+        if ((!(this.fields.includes(field)))) return undefined;
+        let values = [];
+        for (let id of this.ids) {
+            values.push(this[id].getValue(field));
+        }
+        return values;
+    }
 }
