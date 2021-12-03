@@ -36,6 +36,15 @@ const server = http.createServer((req, res) => {
     }
 });
 
-server.listen(addresses.CLIENTPORT, addresses.HOSTNAME, () => {
-    console.log(`* Server running at http://${addresses.HOSTNAME}:${addresses.CLIENTPORT}/`);
+server.listen(addresses.CLIENTBACKPORT, addresses.HOSTNAME, () => {
+    console.log(`* Server running at http://${addresses.HOSTNAME}:${addresses.CLIENTBACKPORT}/`);
+});
+
+
+const app = express();
+
+app.use(express.static('public'));
+
+app.get('/', function(req, res) {
+    
 });
