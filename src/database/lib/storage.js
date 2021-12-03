@@ -1,9 +1,9 @@
+//@ts-check
+
 /**
  * storage.js
- * A collection of objects used in constructing the database found in the 
- * database node
- * 
- * @typedef {string[]} Tuple
+ * @file A collection of objects used in constructing the database found in the 
+ *  database node
  * @author Jacob Kerr
  */
 
@@ -14,15 +14,15 @@ exports.Entry = class {
 
     /**
      * Creates a new Entry object
-     * @param {Tuple[]} fieldvalues - an array of tuples representing 
+     * @param {string[][]} fieldvalues - an array of tuples representing 
      * the field name/value pairs in the entry
      * @public
      */
     constructor(fieldvalues) {
         this.fields = [];
-        for (let [field, value] in fieldvalues) {
-            this.fields.push(field);
-            this[field] = value;
+        for (let fieldvalue of fieldvalues) {
+            this.fields.push(fieldvalue[0]);
+            this[fieldvalue[0]] = fieldvalue[1];
         }
     }
 
@@ -34,7 +34,7 @@ exports.Entry = class {
      * @public
      */
     getValue(field) {
-        if (field in this.fields) return this[field];
+        if (this.fields.includes(field)) return this[field];
         return undefined;
     }
 
@@ -46,7 +46,7 @@ exports.Entry = class {
      * @public
      */
     setValue(field, value) {
-        if (field in this.fields) {
+        if ( this.fields.includes(field)) {
             this[field] = value;
             return true;
         }
@@ -87,14 +87,14 @@ exports.Database = class {
 
     /**
      * Returns the value of a field for the entry of the given id
-     * @param {*} id - the id of the entry
-     * @param {*} field - the field to get the value from
+     * @param {string} id - the id of the entry
+     * @param {string} field - the field to get the value from
      * @returns {string|undefined} the value of the field associated with entry
      * of the corresponding id or undefined if neither exist
      * @public
      */
     getValue(id, field) {
-        if(!(id in this.ids)) return undefined;
+        if(!(this.ids.includes(id))) return undefined;
         /** @type exports.Entry */
         let entry = this[id];
         return entry.getValue(field);
@@ -109,10 +109,10 @@ exports.Database = class {
      * @public
      */
     setValue(id, field, value) {
-        if(!(id in this.ids)) return false;
+        if(!(this.ids.includes(id))) return false;
         /** @type exports.Entry */
         let entry = this[id];
-        return entry.setValue(field);
+        return entry.setValue(field, value);
     }
 
     /**
@@ -124,7 +124,7 @@ exports.Database = class {
      * otherwise
      */
     isValue(field, value) {
-        for (let id in ids) {
+        for (let id of this.ids) {
             /** @type {exports.Entry} */
             let entry = this[id];
             let foundvalue = entry.getValue(field);
@@ -141,14 +141,16 @@ exports.Database = class {
      * @public
      */
     addEntry(values) {
-        if (fieldvalues.length != this.fields.length) return false;
-        let id = fieldvalues[0];
-        if (id in this.ids) return false;
-        /** @type {Tuple[]} */
+        if (values.length !== this.fields.length) return false;
+        let id = values[0];
+        if (this.ids.includes(id)) return false;
+        this.ids.push(id);
+        /** @type {string[][]} */
         let fieldvalues = [];
         for (let i = 0; i < values.length; i++) {
             fieldvalues.push([this.fields[i], values[i]]);
         }
+        this[id] = new exports.Entry(fieldvalues);
         return true;
     }
 }

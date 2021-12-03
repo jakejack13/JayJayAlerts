@@ -9,7 +9,8 @@
     "database": "cd src/database && npm start",
     "website": "cd src/website && npm start",
     "postinstall": "./scripts/postinstall.sh",
-    "test": "mocha --recursive"
+    "test": "mocha --recursive",
+    "demo": "node test/demo.js"
   },
   "repository": {
     "type": "git",
@@ -22,6 +23,9 @@
   },
   "homepage": "https://github.com/jakejack13/JayJayTwitch#readme",
   "dependencies": {
+    
+  },
+  "devDependencies": {
     "mocha": "^9.1.3"
   }
 }
