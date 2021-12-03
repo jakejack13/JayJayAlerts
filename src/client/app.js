@@ -8,17 +8,34 @@
 const http = require('http');
 const express = require('express');
 const path = require('path');
-const app = express();
+
+const alschema = require('../../lib/schema/alerts-schema');
+const addresses = require('../../lib/schema/addresses');
 
 
-app.use(express.json());
-app.use(express.static("express"));
+const server = http.createServer((req, res) => {
+    let url = new URL(req.url, `http://${req.headers.host}`);
+    res.setHeader('Content-Type', 'text/plain');
 
-// default URL for website
-app.use('/', function(req,res){
-    res.sendFile(path.join(__dirname, 'static/index.html'));
+    let message = undefined;
+    switch(url.pathname) {
+        case alschema.FOLLOW:
+            message = `${url.searchParams.get('username')} just followed!`;
+            res.statusCode = 200;
+            res.end(`Okay\n`);
+            break;
+        case alschema.SUBSCRIPTION:
+            message = `${url.searchParams.get('username')} just subscribed!`;
+            res.statusCode = 200;
+            res.end(`Okay\n`);
+            break;
+        default:
+            res.statusCode = 404;
+            res.setHeader('Content-Type', 'text/plain');
+            res.end('Request not found\n');
+    }
 });
-const server = http.createServer(app);
-const port = 3000;
-server.listen(port);
-console.debug('Server listening on port ' + port);
+
+server.listen(addresses.CLIENTPORT, addresses.HOSTNAME, () => {
+    console.log(`* Server running at http://${addresses.HOSTNAME}:${addresses.CLIENTPORT}/`);
+});

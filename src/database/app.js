@@ -9,7 +9,7 @@ const http = require('http');
 
 const { databaseFactory } = require('./lib/database-factory');
 const dbschema = require('../../lib/schema/database-schema');
-const adschema = require('../../lib/schema/addresses');
+const addresses = require('../../lib/schema/addresses');
 
 var database = databaseFactory();
 
@@ -82,6 +82,6 @@ const server = http.createServer((req, res) => {
     }
 });
 
-server.listen(adschema.DATABASEPORT, adschema.HOSTNAME, () => {
-    console.log(`* Server running at http://${adschema.HOSTNAME}:${adschema.DATABASEPORT}/`);
+server.listen(addresses.DATABASEPORT, addresses.HOSTNAME, () => {
+    console.log(`* Server running at http://${addresses.HOSTNAME}:${addresses.DATABASEPORT}/`);
 });
