@@ -1,8 +1,7 @@
 //@ts-check
 
 /**
- * database-factory.js
- * @file The library used to generate new databases for the database node
+ * The library used to generate new databases for the database node
  * @author Jacob Kerr
  */
 

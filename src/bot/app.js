@@ -1,8 +1,7 @@
 //@ts-check
 
 /**
- * app.js - Bot Node
- * @file The entry point to hosting the bot node
+ * The entry point to hosting the bot node
  * @author Jacob Kerr
  */
 

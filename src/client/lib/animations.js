@@ -1,3 +1,10 @@
+//@ts-check
+
+/**
+ * A library of functions used to queue up and display alerts
+ * @author Jacob Kerr
+ */
+
 var messages = [];
 var lock = false;
 
@@ -5,7 +12,7 @@ var lock = false;
  * Queues the message to be shodisplayedwn
  * @param {string} message - the message to queue 
  */
-export function queueMessage(message) {
+exports.queueMessage =  function(message) {
     messages.push(message);
     displayMessages();
 }

@@ -1,8 +1,7 @@
 //@ts-check
 
 /**
- * app.js - Database Node
- * @file The entry point to hosting the database node
+ * The entry point to hosting the database node
  * @author Jacob Kerr
  */
 

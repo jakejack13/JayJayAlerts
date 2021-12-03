@@ -1,9 +1,8 @@
 //@ts-check
 
 /**
- * storage.js
- * @file A collection of objects used in constructing the database found in the 
- *  database node
+ * A collection of objects used in constructing the database found in the 
+ * database node
  * @author Jacob Kerr
  */
 
