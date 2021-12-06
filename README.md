@@ -1,2 +1,2 @@
 # JayJayTwitch
-A Twitch bot for https://twitch.tv/JakeJack
+A Twitch alerts, animations, and animations service, created for and by https://twitch.tv/JakeJack
