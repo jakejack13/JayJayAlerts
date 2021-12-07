@@ -10,22 +10,49 @@ const express = require('express');
 const path = require('path');
 
 const alschema = require('../../lib/schema/alerts-schema');
+const dbschema = require('../../lib/schema/database-schema');
 const addresses = require('../../lib/schema/addresses');
+const { AlertQueue } = require('./lib/alerts');
+
+/** 
+ * The list of channels currently in the database
+ * @type {string[]}
+ */
+var channels = [];
+
+const req = http.request(new URL(dbschema.fieldRequest('channel')), res => {
+    res.on('data', d => {
+        channels = d.split(',');
+    });
+});
+
+req.on('error', error => {
+    console.error(error)
+});
+
+
+var queues = {};
 
 
 const server = http.createServer((req, res) => {
     let url = new URL(req.url, `http://${req.headers.host}`);
     res.setHeader('Content-Type', 'text/plain');
 
-    let message = undefined;
+    let message = "";
+    let username = "";
+    let channel = "";
     switch(url.pathname) {
         case alschema.FOLLOW:
-            message = `${url.searchParams.get('username')} just followed!`;
+            username = url.searchParams.get('username');
+            channel = url.searchParams.get('channel');
+            message = `${username} just followed!`;
             res.statusCode = 200;
             res.end(`Okay\n`);
             break;
         case alschema.SUBSCRIPTION:
-            message = `${url.searchParams.get('username')} just subscribed!`;
+            username = url.searchParams.get('username');
+            channel = url.searchParams.get('channel');
+            message = `${username} just subscribed!`;
             res.statusCode = 200;
             res.end(`Okay\n`);
             break;
@@ -33,6 +60,11 @@ const server = http.createServer((req, res) => {
             res.statusCode = 404;
             res.setHeader('Content-Type', 'text/plain');
             res.end('Request not found\n');
+            return;
+    }
+
+    for (let queue of queues[channel]) {
+        queue.queueMessage(message);
     }
 });
 
@@ -43,8 +75,12 @@ server.listen(addresses.CLIENTBACKPORT, addresses.HOSTNAME, () => {
 
 const app = express();
 
-app.use(express.static('public'));
+app.set('view engine', 'ejs');
 
-app.get('/', function(req, res) {
-    
-});
+for (let channel of channels) {
+    app.get(`/${channel}`, function(req, res) {
+        let queue = new AlertQueue(channel, res);
+        queues[channel].add(queue);
+        res.render('../pages/index', {message: ""});
+    });
+}
