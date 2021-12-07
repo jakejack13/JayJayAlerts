@@ -82,6 +82,6 @@ const server = http.createServer((req, res) => {
     }
 });
 
-server.listen(addresses.DATABASEPORT, addresses.HOSTNAME, () => {
-    console.log(`* Server running at http://${addresses.HOSTNAME}:${addresses.DATABASEPORT}/`);
+server.listen(addresses.DATABASEPORT, addresses.DATABASEHOSTNAME, () => {
+    console.log(`* Server running at http://${addresses.DATABASEHOSTNAME}:${addresses.DATABASEPORT}/`);
 });

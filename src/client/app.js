@@ -74,14 +74,18 @@ const server = http.createServer((req, res) => {
     }
 });
 
-server.listen(addresses.CLIENTBACKPORT, addresses.HOSTNAME, () => {
-    console.log(`* Server running at http://${addresses.HOSTNAME}:${addresses.CLIENTBACKPORT}/`);
+server.listen(addresses.CLIENTBACKPORT, addresses.CLIENTBACKHOSTNAME, () => {
+    console.log(`* Server running at http://${addresses.CLIENTBACKHOSTNAME}:${addresses.CLIENTBACKPORT}/`);
 });
 
 
 const app = express();
 
 app.set('view engine', 'ejs');
+
+app.listen(addresses.CLIENTFRONTPORT, addresses.CLIENTFRONTHOSTNAME, () => {
+    console.log(`* Website running at http://${addresses.CLIENTFRONTHOSTNAME}:${addresses.CLIENTFRONTPORT}/`);
+})
 
 for (let channel of channels) {
     app.get(`/${channel}`, function(req, res) {
@@ -91,4 +95,8 @@ for (let channel of channels) {
     });
 }
 
-console.log(`* Website running at http://${addresses.HOSTNAME}:${addresses.CLIENTFRONTPORT}/`);
+app.get('/', function(req, res) {
+    res.statusCode = 200;
+    res.setHeader('Content-Type', 'text/plain');
+    res.end('Okay\n');
+});
