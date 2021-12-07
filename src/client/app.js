@@ -42,6 +42,12 @@ const server = http.createServer((req, res) => {
     let username = "";
     let channel = "";
     switch(url.pathname) {
+        case alschema.CHAT:
+            username = url.searchParams.get('username');
+            channel = url.searchParams.get('channel');
+            message = url.searchParams.get('message');
+            message = `${username}: ${message}`;
+        break;
         case alschema.FOLLOW:
             username = url.searchParams.get('username');
             channel = url.searchParams.get('channel');
@@ -84,3 +90,5 @@ for (let channel of channels) {
         res.render('../pages/index', {message: ""});
     });
 }
+
+console.log(`* Website running at http://${addresses.HOSTNAME}:${addresses.CLIENTFRONTPORT}/`);

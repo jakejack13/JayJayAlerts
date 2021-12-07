@@ -5,15 +5,45 @@
  * @author Jacob Kerr
  */
 
-const storage = require('./storage');
+const fs = require('fs');
+const readline = require('readline');
+
+const { Database } = require('./storage');
 const schema = require('../../../lib/schema/database-schema');
+
+
+const DBFILE = './data/storage.db';
 
 
  /**
   * Returns a new Database object with the field names as specified by the 
   * database schema
-  * @returns new Database object
+  * @returns {Database} new Database object
   */
-exports.databaseFactory = function () {
-    return new storage.Database(schema.FIELDS);
+let databaseFactory = function () {
+    return new Database(schema.FIELDS);
+}
+
+
+/**
+ * Loads the database from the database file
+ * @returns {Database} loaded Database object
+ */
+exports.loadDatabase = function () {
+    let database = databaseFactory();
+    let readStream = fs.createReadStream(DBFILE);
+    let lines = readline.createInterface({
+        input: readStream,
+        crlfDelay: Infinity
+    });
+
+    let process = async function() {
+        for await (let line of lines) {
+            let split = line.split(',');
+            database.addEntry(split);
+        }
+    };
+    process();
+
+    return database;
 }

@@ -36,6 +36,7 @@ const opts = {
 
 const client = new tmi.client(opts);
 client.on('connected', onConnectedHandler);
+client.on('chat', onChatHandler);
 client.on('subscription', onSubscriptionHandler);
 client.connect();
 
@@ -46,6 +47,28 @@ client.connect();
  */
 function onConnectedHandler (addr, port) {
     console.log(`* Connected to ${addr}:${port}`);
+}
+
+
+/**
+ * 
+ * @param {string} channel 
+ * @param {tmi.ChatUserstate} userstate 
+ * @param {string} message 
+ * @param {boolean} self 
+ */
+function onChatHandler(channel, userstate, message, self) {
+    if (self) return;
+
+    const req = http.request(new URL(alschema.chatRequest(channel, userstate['display-name'], message)), res => {
+        res.on('data', data => {
+            console.log(data)
+        });
+    });
+    
+    req.on('error', error => {
+        console.error(error)
+    });
 }
 
 

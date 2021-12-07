@@ -7,11 +7,11 @@
 
 const http = require('http');
 
-const { databaseFactory } = require('./lib/database-factory');
+const { loadDatabase } = require('./lib/database-factory');
 const dbschema = require('../../lib/schema/database-schema');
 const addresses = require('../../lib/schema/addresses');
 
-var database = databaseFactory();
+var database = loadDatabase();
 
 const server = http.createServer((req, res) => {
     let url = new URL(req.url, `http://${req.headers.host}`);
