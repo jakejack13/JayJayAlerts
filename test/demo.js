@@ -1,7 +1,6 @@
 //@ts-check
 
-const storage = require('../src/database/lib/storage');
+const { loadDatabase } = require('../src/database/lib/database-factory');
 
-var database = new storage.Database(['name','age']);
-console.log(database.addEntry(['JakeJack','35']));
-console.log(database.isValue('name','JakeJack'));
+var database = loadDatabase();
+// console.log(database.getField('channelname'));

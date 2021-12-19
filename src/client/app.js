@@ -85,7 +85,8 @@ app.set('view engine', 'ejs');
 
 app.listen(addresses.CLIENTFRONTPORT, addresses.CLIENTFRONTHOSTNAME, () => {
     console.log(`* Website running at http://${addresses.CLIENTFRONTHOSTNAME}:${addresses.CLIENTFRONTPORT}/`);
-})
+});
+
 
 for (let channel of channels) {
     app.get(`/${channel}`, function(req, res) {

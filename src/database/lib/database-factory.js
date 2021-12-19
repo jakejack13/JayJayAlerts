@@ -7,12 +7,18 @@
 
 const fs = require('fs');
 const readline = require('readline');
+const path = require('path');
 
 const { Database } = require('./storage');
 const schema = require('../../../lib/schema/database-schema');
 
 
-const DBFILE = './data/storage.db';
+/** 
+ * @todo Determine permanent place for database file
+ * - Docker volume?
+ * - Separate Docker image?
+*/
+const DBFILE = path.join(__dirname, '../data/storage.db');
 
 
  /**
