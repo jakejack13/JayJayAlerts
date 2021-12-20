@@ -1,5 +1,7 @@
 #!/bin/sh
 
+cd lib && npm install
+cd ..
 cd src
 cd bot && npm install
 cd ..

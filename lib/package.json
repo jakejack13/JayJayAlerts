@@ -1,6 +1,9 @@
 {
     "name": "jayjaytwitch-lib",
     "main": "Dockerfile",
+    "scripts": {
+        "postinstall": "python3 -m pip install -r requirements.txt"
+    },
     "author": "Jacob Kerr",
     "license": "MIT",
     "dependencies": {
