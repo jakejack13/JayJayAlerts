@@ -1,5 +1,6 @@
 {
-    "name": "jayjaytwitch-lib",
+    "name": "jayjaytwitch-shared",
+    "description": "A collection of libraries to be shared across nodes",
     "main": "Dockerfile",
     "scripts": {
         "postinstall": "python3 -m pip install -r requirements.txt"

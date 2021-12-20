@@ -1,4 +1,4 @@
 #!/bin/sh
 
-docker build ./lib -t jayjaytwitch_lib
+docker build ./shared -t jayjaytwitch_shared
 docker compose up

@@ -1,4 +1,4 @@
-FROM jayjaytwitch_lib
+FROM jayjaytwitch_shared
 WORKDIR /src
 COPY . .
 EXPOSE 8000

@@ -9,8 +9,8 @@ require('dotenv').config();
 const tmi = require('tmi.js');
 const http = require('http');
 
-const dbschema = require('../../lib/schema/database-schema');
-const alschema = require('../../lib/schema/alerts-schema');
+const dbschema = require('../../shared/schema/database-schema');
+const alschema = require('../../shared/schema/alerts-schema');
 
 var channels = [];
 

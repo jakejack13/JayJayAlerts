@@ -1,7 +1,6 @@
 FROM jayjaytwitch_shared
 WORKDIR /src
 COPY . .
-EXPOSE 8002
-EXPOSE 3000
+EXPOSE 3001
 RUN npm install
 CMD ["npm","start"]

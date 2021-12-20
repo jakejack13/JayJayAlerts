@@ -18,3 +18,7 @@ services:
     build: ./src/database
     ports:
       - "8000:8000"
+  website:
+    build: ./src/website
+    ports:
+      - "3001:3001"

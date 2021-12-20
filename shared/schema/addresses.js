@@ -5,7 +5,9 @@
  * @author Jacob Kerr
  */
 
-require('dotenv').config({path: './addresses.env'});
+const path = require('path');
+
+require('dotenv').config({path: path.join(__dirname, './addresses.env')});
 
 /**
  * The hostname for the database node

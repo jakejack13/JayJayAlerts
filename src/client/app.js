@@ -9,9 +9,9 @@ const http = require('http');
 const express = require('express');
 const path = require('path');
 
-const alschema = require('../../lib/schema/alerts-schema');
-const dbschema = require('../../lib/schema/database-schema');
-const addresses = require('../../lib/schema/addresses');
+const alschema = require('../../shared/schema/alerts-schema');
+const dbschema = require('../../shared/schema/database-schema');
+const addresses = require('../../shared/schema/addresses');
 const { AlertQueue } = require('./lib/alerts');
 
 /** 

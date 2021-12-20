@@ -1,6 +1,6 @@
 #!/bin/sh
 
-cd lib && npm install
+cd shared && npm install
 cd ..
 cd src
 cd bot && npm install

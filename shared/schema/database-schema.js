@@ -5,7 +5,9 @@
  * @author Jacob Kerr
  */
 
-require('dotenv').config({path: './database-schema.env'})
+const path = require('path');
+
+require('dotenv').config({path: path.join(__dirname, './database-schema.env')})
 
 const addresses = require('./addresses');
 
