@@ -3,4 +3,4 @@ WORKDIR /src
 COPY . .
 EXPOSE 8000
 RUN python3 -m pip install -r requirements.txt
-CMD ["python3","-m","flask","run","--port","8000"]
+CMD ["python3","-m","flask","run","-h","database","-p","8000"]

@@ -9,7 +9,7 @@
     "stop": "./scripts/clean.sh",
     "bot": "cd src/bot && npm start",
     "client": "cd src/client && npm start",
-    "database": "cd src/database && npm start",
+    "database": "cd src/database && python3 app.py",
     "website": "cd src/website && npm start",
     "test": "mocha --recursive",
     "demo": "node test/demo.js"

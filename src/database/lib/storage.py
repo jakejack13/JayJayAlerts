@@ -9,7 +9,7 @@
         A class representing a database
 """
 
-from typing import *
+from typing import Union
 
 from ....shared.schema.databaseschema import FIELDS
 
