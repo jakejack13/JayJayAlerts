@@ -12,17 +12,17 @@ const addresses = require('./addresses');
 /**
  * The request path for a chat request
  */
-exports.CHAT = '/chat'
+exports.CHAT = process.env.AL_CHAT;
 
 /**
  * The request path for a follow request
  */
-exports.FOLLOW = '/follow';
+exports.FOLLOW = process.env.AL_FOLLOW;
 
 /**
  * The request path for a subscription request
  */
-exports.SUBSCRIPTION = '/sub';
+exports.SUBSCRIPTION = process.env.AL_SUB;
 
 
 /**

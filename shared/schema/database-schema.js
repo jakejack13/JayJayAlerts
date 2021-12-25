@@ -7,40 +7,38 @@
 
 const path = require('path');
 
-require('dotenv').config({path: path.join(__dirname, './database-schema.env')})
-
 const addresses = require('./addresses');
 
 
 /**
  * The fields stored in the database
  */
-let FIELDS = process.env.FIELDS.split(',');
+let FIELDS = process.env.DB_FIELDS.split(',');
 
 /**
  * The request path for a getValue request
  */
-let GET = process.env.GET;
+let GET = process.env.DB_GET;
 
 /**
  * The request path for a setValue request
  */
-let SET = process.env.SET;
+let SET = process.env.DB_SET;
 
 /**
  * The request path for an isValue request
  */
-let IS = process.env.IS;
+let IS = process.env.DB_IS;
 
 /**
  * The request path for an addEntry request
  */
-let ADD = process.env.ADD;
+let ADD = process.env.DB_ADD;
 
 /**
  * The request path for a getField request
  */
-let FIELD = process.env.FIELD;
+let FIELD = process.env.DB_FIELD;
 
 
 /**

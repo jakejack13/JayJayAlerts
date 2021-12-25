@@ -1,6 +1,6 @@
 FROM jayjaytwitch_shared
 WORKDIR /src
 COPY . .
-EXPOSE 3001
+EXPOSE ${ADD_WEBSITEPORT}
 RUN npm install
 CMD ["npm","start"]

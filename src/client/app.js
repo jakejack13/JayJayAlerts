@@ -22,13 +22,13 @@ var channels = [];
 
 const req = http.request(new URL(dbschema.fieldRequest('channel')), res => {
     res.on('data', d => {
-        channels = d.split(',');
+        channels = d.toString().split(',');
     });
 });
-
 req.on('error', error => {
     console.error(error)
 });
+req.end();
 
 
 var queues = {};

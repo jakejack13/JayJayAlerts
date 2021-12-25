@@ -7,6 +7,11 @@ services:
     depends_on:
       - database
       - client
+    env_file:
+      - ./envs/addresses.env
+      - ./envs/alerts-schema.env
+      - ./envs/database-schema.env
+      - ./envs/secrets.env
   client:
     build: ./src/client
     ports:
@@ -14,11 +19,28 @@ services:
       - "3000:3000"
     depends_on:
       - database
+    env_file:
+      - ./envs/addresses.env
+      - ./envs/alerts-schema.env
+      - ./envs/database-schema.env
+      - ./envs/secrets.env
   database:
     build: ./src/database
     ports:
       - "8000:8000"
+    volumes:
+      - /Users/jakejack/Documents/JayJayTwitch/data/:/data/
+    env_file:
+      - ./envs/addresses.env
+      - ./envs/alerts-schema.env
+      - ./envs/database-schema.env
+      - ./envs/secrets.env
   website:
     build: ./src/website
     ports:
       - "3001:3001"
+    env_file:
+      - ./envs/addresses.env
+      - ./envs/alerts-schema.env
+      - ./envs/database-schema.env
+      - ./envs/secrets.env

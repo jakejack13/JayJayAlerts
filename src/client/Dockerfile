@@ -1,7 +1,7 @@
 FROM jayjaytwitch_shared
 WORKDIR /src
 COPY . .
-EXPOSE 8002
-EXPOSE 3000
+EXPOSE ${ADD_CLIENTBACKPORT}
+EXPOSE ${ADD_CLIENTFRONTPORT}
 RUN npm install
 CMD ["npm","start"]

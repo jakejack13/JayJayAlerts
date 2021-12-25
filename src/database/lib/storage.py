@@ -10,11 +10,11 @@
 """
 
 from typing import Union
+import os
 
-from ....shared.schema.databaseschema import FIELDS
+from .schema import FIELDS
 
-
-DATABASEFILE = "../../data/storage.db"
+DATABASEFILE = "/data/storage.db"
 """The file to load the database from and save the database to"""
 
 class Database:
@@ -149,9 +149,16 @@ class Database:
         return result
 
 
-    def save() -> None:
+    def save(self) -> None:
         """Saves the database to the database file"""
-        pass
+        with open(self.savefile, 'w') as f:
+            for entry in self.entries.values():
+                for value in entry.values():
+                    f.write(f"{value}\n")
+
+    
+    def __str__(self) -> str:
+        return f"Fields:\n{self.fields}\nEntries:\n{self.entries}\nSave file:\n{self.savefile}\n"
 
 
 def database_factory() -> Database:
@@ -163,5 +170,7 @@ def database_factory() -> Database:
     Database
         the newly created database"""
     database = Database(FIELDS, DATABASEFILE)
-
-    return None
+    with open(DATABASEFILE, 'r') as f:
+        for line in f:
+            database.add_entry(line.split(','))
+    return database

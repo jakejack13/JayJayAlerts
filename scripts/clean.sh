@@ -1,6 +1,6 @@
 #!/bin/sh
 
-docker compose rm -f -s -v
+VOLUMEMOUNT="$(pwd)/data" docker compose rm -f -s -v
 docker image rm jayjaytwitch_shared
 docker image rm jayjaytwitch_bot
 docker image rm jayjaytwitch_client

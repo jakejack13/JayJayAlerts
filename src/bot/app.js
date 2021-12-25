@@ -5,33 +5,36 @@
  * @author Jacob Kerr
  */
 
-require('dotenv').config();
 const tmi = require('tmi.js');
 const http = require('http');
 
 const dbschema = require('../../shared/schema/database-schema');
 const alschema = require('../../shared/schema/alerts-schema');
 
+
+/** 
+ * The list of channels currently in the database
+ * @type {string[]}
+ */
 var channels = [];
 
 const req = http.request(new URL(dbschema.fieldRequest('channel')), res => {
     res.on('data', d => {
-        channels = d.split(',');
+        channels = d.toString().split(',');
     });
 });
-
 req.on('error', error => {
     console.error(error)
 });
-
+req.end();
 
 /** @type {tmi.Options} */
 const opts = {
     identity: {
-        username: process.env.BOT_USERNAME,
-        password: process.env.OAUTH_TOKEN
+        username: process.env.SEC_BOTUSERNAME,
+        password: process.env.SEC_OAUTHTOKEN
     },
-    channels: channels
+    channels: channels // TODO: Use callbacks to block execution until request of channels is finished
 };
 
 const client = new tmi.client(opts);
@@ -59,6 +62,8 @@ function onConnectedHandler (addr, port) {
  */
 function onChatHandler(channel, userstate, message, self) {
     if (self) return;
+
+    console.error(message);
 
     const req = http.request(new URL(alschema.chatRequest(channel, userstate['display-name'], message)), res => {
         res.on('data', data => {
