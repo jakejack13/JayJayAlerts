@@ -1,5 +1,5 @@
 FROM jayjaytwitch_shared
-WORKDIR /src
+WORKDIR /src/website
 COPY . .
 EXPOSE ${ADD_WEBSITEPORT}
 RUN npm install

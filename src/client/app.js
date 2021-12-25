@@ -23,6 +23,7 @@ var channels = [];
 const req = http.request(new URL(dbschema.fieldRequest('channel')), res => {
     res.on('data', d => {
         channels = d.toString().split(',');
+        channelCallback();
     });
 });
 req.on('error', error => {
@@ -30,6 +31,7 @@ req.on('error', error => {
 });
 req.end();
 
+let channelCallback = () => {
 
 var queues = {};
 
@@ -47,6 +49,9 @@ const server = http.createServer((req, res) => {
             channel = url.searchParams.get('channel');
             message = url.searchParams.get('message');
             message = `${username}: ${message}`;
+            res.statusCode = 200;
+            res.end('Okay\n');
+            break;
         break;
         case alschema.FOLLOW:
             username = url.searchParams.get('username');
@@ -69,8 +74,11 @@ const server = http.createServer((req, res) => {
             return;
     }
 
-    for (let queue of queues[channel]) {
-        queue.queueMessage(message);
+    channel = channel.toLowerCase();
+    if (queues.hasOwnProperty(channel)) {
+        for (let queue of queues[channel]) {
+            queue.queueMessage(message);
+        }
     }
 });
 
@@ -82,6 +90,7 @@ server.listen(addresses.CLIENTBACKPORT, addresses.CLIENTBACKHOSTNAME, () => {
 const app = express();
 
 app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, '/views/'));
 
 app.listen(addresses.CLIENTFRONTPORT, addresses.CLIENTFRONTHOSTNAME, () => {
     console.log(`* Website running at http://${addresses.CLIENTFRONTHOSTNAME}:${addresses.CLIENTFRONTPORT}/`);
@@ -89,10 +98,15 @@ app.listen(addresses.CLIENTFRONTPORT, addresses.CLIENTFRONTHOSTNAME, () => {
 
 
 for (let channel of channels) {
+    channel = channel.toLowerCase();
     app.get(`/${channel}`, function(req, res) {
         let queue = new AlertQueue(channel, res);
-        queues[channel].add(queue);
-        res.render('../pages/index', {message: ""});
+        if (!queues.hasOwnProperty(channel)) {
+            queues[channel] = [];
+        }
+        queues[channel].push(queue);
+        res.render('index', {message: ""});
+        console.log("Rendered");
     });
 }
 
@@ -101,3 +115,5 @@ app.get('/', function(req, res) {
     res.setHeader('Content-Type', 'text/plain');
     res.end('Okay\n');
 });
+
+}

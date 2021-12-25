@@ -1,5 +1,5 @@
 FROM jayjaytwitch_shared
-WORKDIR /src
+WORKDIR /src/bot
 COPY . .
 EXPOSE ${ADD_BOTPORT}
 RUN npm install

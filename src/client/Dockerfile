@@ -1,5 +1,5 @@
 FROM jayjaytwitch_shared
-WORKDIR /src
+WORKDIR /src/client
 COPY . .
 EXPOSE ${ADD_CLIENTBACKPORT}
 EXPOSE ${ADD_CLIENTFRONTPORT}

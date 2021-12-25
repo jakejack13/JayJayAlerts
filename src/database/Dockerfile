@@ -1,5 +1,5 @@
 FROM jayjaytwitch_shared
-WORKDIR /src
+WORKDIR /src/database
 COPY . .
 EXPOSE ${ADD_DATABASEPORT}
 RUN python3 -m pip install -r requirements.txt

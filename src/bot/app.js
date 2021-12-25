@@ -21,12 +21,16 @@ var channels = [];
 const req = http.request(new URL(dbschema.fieldRequest('channel')), res => {
     res.on('data', d => {
         channels = d.toString().split(',');
+        channelCallback();
     });
 });
 req.on('error', error => {
     console.error(error)
 });
 req.end();
+
+
+let channelCallback = () => {
 
 /** @type {tmi.Options} */
 const opts = {
@@ -63,17 +67,14 @@ function onConnectedHandler (addr, port) {
 function onChatHandler(channel, userstate, message, self) {
     if (self) return;
 
-    console.error(message);
-
-    const req = http.request(new URL(alschema.chatRequest(channel, userstate['display-name'], message)), res => {
+    const req = http.request(new URL(alschema.chatRequest(channel.substring(1), userstate['display-name'], message)), res => {
         res.on('data', data => {
-            console.log(data)
         });
     });
-    
     req.on('error', error => {
         console.error(error)
     });
+    req.end();
 }
 
 
@@ -97,4 +98,6 @@ function onSubscriptionHandler(channel, username, methods, message, userstate) {
     req.on('error', error => {
         console.error(error)
     });
+}
+
 }

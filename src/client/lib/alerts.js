@@ -45,7 +45,7 @@ exports.AlertQueue = class {
         } else {
             this.lock = true;
             const message = this.messages.pop();
-            this.response.render('../pages/index', {message: message});
+            this.response.render('index', {message: message});
             setTimeout(() => {this.response.render('../pages/index', {message: ""}); this.lock = false;}, 5000)
         }
     }
