@@ -6,9 +6,11 @@
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
     <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'">
     <title>JayJay</title>
-    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="index.css" type="text/css">
+    <script src="/socket.io/socket.io.js"></script>
   </head>
   <body>
-    <%- include('./alert') %>
+    <div id="channel" data-channel=<%= channel %>></div>
+    <script src="/views/alert.js"></script>
   </body>
 </html>

@@ -13,6 +13,7 @@ const alschema = require('../../shared/schema/alerts-schema');
 const dbschema = require('../../shared/schema/database-schema');
 const addresses = require('../../shared/schema/addresses');
 const { AlertQueue } = require('./lib/alerts');
+const { hostname } = require('os');
 
 /** 
  * The list of channels currently in the database
@@ -33,10 +34,18 @@ req.end();
 
 let channelCallback = () => {
 
-var queues = {};
 
+/**
+ * The lists of requests for each channel name
+ */
+var results = {};
 
-const server = http.createServer((req, res) => {
+/**
+ * The next message for each channel name
+ */
+var messages = {};
+
+const backServer = http.createServer((req, res) => {
     let url = new URL(req.url, `http://${req.headers.host}`);
     res.setHeader('Content-Type', 'text/plain');
 
@@ -75,14 +84,9 @@ const server = http.createServer((req, res) => {
     }
 
     channel = channel.toLowerCase();
-    if (queues.hasOwnProperty(channel)) {
-        for (let queue of queues[channel]) {
-            queue.queueMessage(message);
-        }
-    }
 });
 
-server.listen(addresses.CLIENTBACKPORT, addresses.CLIENTBACKHOSTNAME, () => {
+backServer.listen(addresses.CLIENTBACKPORT, addresses.CLIENTBACKHOSTNAME, () => {
     console.log(`* Server running at http://${addresses.CLIENTBACKHOSTNAME}:${addresses.CLIENTBACKPORT}/`);
 });
 
@@ -91,22 +95,13 @@ const app = express();
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, '/views/'));
-
-app.listen(addresses.CLIENTFRONTPORT, addresses.CLIENTFRONTHOSTNAME, () => {
-    console.log(`* Website running at http://${addresses.CLIENTFRONTHOSTNAME}:${addresses.CLIENTFRONTPORT}/`);
-});
+app.use('/views', express.static('views'));
 
 
 for (let channel of channels) {
     channel = channel.toLowerCase();
     app.get(`/${channel}`, function(req, res) {
-        let queue = new AlertQueue(channel, res);
-        if (!queues.hasOwnProperty(channel)) {
-            queues[channel] = [];
-        }
-        queues[channel].push(queue);
-        res.render('index', {message: ""});
-        console.log("Rendered");
+        res.render('index', {channel: channel});
     });
 }
 
@@ -114,6 +109,25 @@ app.get('/', function(req, res) {
     res.statusCode = 200;
     res.setHeader('Content-Type', 'text/plain');
     res.end('Okay\n');
+});
+
+const frontServer = http.createServer(app);
+const socketio = require('socket.io');
+/** @type {socketio.Server} */
+//@ts-ignore
+const io = socketio(frontServer);
+
+io.on("connection", function(socket) {
+    console.log("Socket connected");
+    socket.emit('client connected');
+
+    socket.on('channel sent', function(channel) {
+        console.log(channel);
+    });
+});
+
+frontServer.listen(addresses.CLIENTFRONTPORT, addresses.CLIENTFRONTHOSTNAME, () => {
+    console.log(`* Website running at http://${addresses.CLIENTFRONTHOSTNAME}:${addresses.CLIENTFRONTPORT}/`);
 });
 
 }
