@@ -113,3 +113,6 @@ data/
 
 # Python
 __pycache__/
+
+# DS Store
+.DS_Store
