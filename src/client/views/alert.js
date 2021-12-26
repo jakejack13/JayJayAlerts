@@ -1,4 +1,6 @@
 const socket = io();
+// const audio = new Audio('/views/discord-notification.mp3');
+
 
 /**
  * A class representing a queue of alerts to show on the webpage
@@ -37,6 +39,7 @@ const socket = io();
             this.lock = true;
             const message = this.messages.pop();
             this.element.innerText = message;
+            // audio.play();
             setTimeout(() => {this.element.innerText = ""; this.lock = false;}, 5000)
         }
     }
@@ -52,5 +55,3 @@ socket.on('client connected', () => {
 socket.on('message', function(message) {
     queue.queueMessage(message);
 });
-
-

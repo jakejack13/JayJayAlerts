@@ -12,8 +12,6 @@ const path = require('path');
 const alschema = require('../../shared/schema/alerts-schema');
 const dbschema = require('../../shared/schema/database-schema');
 const addresses = require('../../shared/schema/addresses');
-const { AlertQueue } = require('./lib/alerts');
-const { hostname } = require('os');
 const socketio = require('socket.io');
 
 const app = express();
@@ -61,32 +59,14 @@ const backServer = http.createServer((req, res) => {
     let url = new URL(req.url, `http://${req.headers.host}`);
     res.setHeader('Content-Type', 'text/plain');
 
-    let message = "";
-    let username = "";
     let channel = "";
+    let message = "";
     switch(url.pathname) {
-        case alschema.CHAT:
-            username = url.searchParams.get('username');
+        case alschema.MESSAGE:
             channel = url.searchParams.get('channel');
             message = url.searchParams.get('message');
-            message = `${username}: ${message}`;
             res.statusCode = 200;
             res.end('Okay\n');
-            break;
-        break;
-        case alschema.FOLLOW:
-            username = url.searchParams.get('username');
-            channel = url.searchParams.get('channel');
-            message = `${username} just followed!`;
-            res.statusCode = 200;
-            res.end(`Okay\n`);
-            break;
-        case alschema.SUBSCRIPTION:
-            username = url.searchParams.get('username');
-            channel = url.searchParams.get('channel');
-            message = `${username} just subscribed!`;
-            res.statusCode = 200;
-            res.end(`Okay\n`);
             break;
         default:
             res.statusCode = 404;

@@ -4,6 +4,7 @@
  * The entry point to hosting the bot node
  * @author Jacob Kerr
  */
+const _ = '';
 
 const tmi = require('tmi.js');
 const http = require('http');
@@ -38,7 +39,7 @@ const opts = {
         username: process.env.SEC_BOTUSERNAME,
         password: process.env.SEC_OAUTHTOKEN
     },
-    channels: channels // TODO: Use callbacks to block execution until request of channels is finished
+    channels: channels
 };
 
 const client = new tmi.client(opts);
@@ -67,10 +68,9 @@ function onConnectedHandler (addr, port) {
 function onChatHandler(channel, userstate, message, self) {
     if (self) return;
 
-    const req = http.request(new URL(alschema.chatRequest(channel.substring(1), userstate['display-name'], message)), res => {
-        res.on('data', data => {
-        });
-    });
+    let alertMessage = `${userstate['display-name']}: ${message}`;
+
+    const req = http.request(new URL(alschema.messageRequest(channel.substring(1), alertMessage)));
     req.on('error', error => {
         console.error(error)
     });
@@ -87,17 +87,15 @@ function onChatHandler(channel, userstate, message, self) {
  * @param {tmi.SubUserstate} userstate - the state of the user subscribing
  */
 function onSubscriptionHandler(channel, username, methods, message, userstate) {
-    if (!(channels.includes(channel))) return;
+    if (self) return;
 
-    const req = http.request(new URL(alschema.subscriptionRequest(channel, userstate['display-name'])), res => {
-        res.on('data', data => {
-            console.log(data)
-        });
-    });
-    
+    let alertMessage = `${username} just subscribed!`;
+
+    const req = http.request(new URL(alschema.messageRequest(channel.substring(1), alertMessage)));
     req.on('error', error => {
         console.error(error)
     });
+    req.end();
 }
 
 }
