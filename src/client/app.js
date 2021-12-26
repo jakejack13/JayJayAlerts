@@ -14,6 +14,13 @@ const dbschema = require('../../shared/schema/database-schema');
 const addresses = require('../../shared/schema/addresses');
 const { AlertQueue } = require('./lib/alerts');
 const { hostname } = require('os');
+const socketio = require('socket.io');
+
+const app = express();
+const frontServer = http.createServer(app);
+/** @type {socketio.Server} */
+//@ts-ignore
+const io = socketio(frontServer);
 
 /** 
  * The list of channels currently in the database
@@ -44,6 +51,11 @@ var results = {};
  * The next message for each channel name
  */
 var messages = {};
+
+/** 
+ * The list of sockets 
+ */
+var sockets = {};
 
 const backServer = http.createServer((req, res) => {
     let url = new URL(req.url, `http://${req.headers.host}`);
@@ -84,14 +96,16 @@ const backServer = http.createServer((req, res) => {
     }
 
     channel = channel.toLowerCase();
+    if(sockets.hasOwnProperty(channel)) {
+        for (let socket of sockets[channel]) {
+            socket.emit('message', message);
+        }
+    }
 });
 
 backServer.listen(addresses.CLIENTBACKPORT, addresses.CLIENTBACKHOSTNAME, () => {
     console.log(`* Server running at http://${addresses.CLIENTBACKHOSTNAME}:${addresses.CLIENTBACKPORT}/`);
 });
-
-
-const app = express();
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, '/views/'));
@@ -111,18 +125,15 @@ app.get('/', function(req, res) {
     res.end('Okay\n');
 });
 
-const frontServer = http.createServer(app);
-const socketio = require('socket.io');
-/** @type {socketio.Server} */
-//@ts-ignore
-const io = socketio(frontServer);
 
 io.on("connection", function(socket) {
-    console.log("Socket connected");
     socket.emit('client connected');
 
     socket.on('channel sent', function(channel) {
-        console.log(channel);
+        if (!sockets.hasOwnProperty(channel)) {
+            sockets[channel] = [];
+        }
+        sockets[channel].push(socket);
     });
 });
 

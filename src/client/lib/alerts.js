@@ -9,7 +9,7 @@ const express = require('express');
 
 
 /**
- * Aclass representing a queue of alerts to show on the webpage
+ * A class representing a queue of alerts to show on the webpage
  */
 exports.AlertQueue = class {
     /**
