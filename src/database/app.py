@@ -61,7 +61,7 @@ def field_request():
     value = database.get_field(request.args.get("field"))
     if value is None:
         return "Field not found", 406
-    return f"{''.join(value)}", 200
+    return f"{','.join(value)}", 200
 
 if __name__ == "__main__":
     app.run(
