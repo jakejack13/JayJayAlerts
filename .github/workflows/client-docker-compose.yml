@@ -11,5 +11,4 @@ services:
       - ../../envs/addresses.env
       - ../../envs/alerts-schema.env
       - ../../envs/database-schema.env
-      - ../../envs/secrets.env
     entrypoint: ["npm", "run", "lint"]
