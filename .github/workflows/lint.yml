@@ -11,9 +11,7 @@ jobs:
         uses: actions/checkout@v2
       - run: docker build ./shared -t jayjaytwitch_shared
         name: Build shared image
-      - run: docker build ./src/bot -t jayjaytwitch_bot
-        name: Build bot node
-      - run: docker run jayjaytwitch_bot "run lint"
+      - run: docker compose -f ./bot-docker-compose.yml up 
         name: Lint bot node
   lint_client:
     name: Lint client node
@@ -23,9 +21,7 @@ jobs:
         uses: actions/checkout@v2
       - run: docker build ./shared -t jayjaytwitch_shared
         name: Build shared image
-      - run: docker build ./src/client -t jayjaytwitch_client
-        name: Build client node
-      - run: docker run jayjaytwitch_client "run lint"
+      - run: docker compose -f ./client-docker-compose.yml up 
         name: Lint client node
   lint_database:
     name: Lint database node
@@ -35,9 +31,7 @@ jobs:
         uses: actions/checkout@v2
       - run: docker build ./shared -t jayjaytwitch_shared
         name: Build shared image
-      - run: docker build ./src/database -t jayjaytwitch_database
-        name: Build database node
-      - run: docker run jayjaytwitch_database --entrypoint "pylint app.py lib/**"
+      - run: docker compose -f ./database-docker-compose.yml up 
         name: Lint database node
   lint_website:
     name: Lint website node
@@ -47,9 +41,7 @@ jobs:
         uses: actions/checkout@v2
       - run: docker build ./shared -t jayjaytwitch_shared
         name: Build shared image
-      - run: docker build ./src/website -t jayjaytwitch_website
-        name: Build website node
-      - run: docker run jayjaytwitch_website "run lint"
+      - run: docker compose -f ./website-docker-compose.yml up 
         name: Lint website node
   lint_shared:
     name: Lint shared library
@@ -57,7 +49,5 @@ jobs:
     steps: 
       - name: Checkout repository code
         uses: actions/checkout@v2
-      - run: docker build ./shared -t jayjaytwitch_shared
-        name: Build shared image
-      - run: docker run jayjaytwitch_shared "npm run lint"
-        name: Lint shared node
+      - run: docker compose -f ./shared-docker-compose.yml up 
+        name: Lint shared library

@@ -1,0 +1,15 @@
+version: "3.8"
+services:
+  client:
+    build: ../../src/client
+    ports:
+      - "8002:8002"
+      - "3000:3000"
+    depends_on:
+      - database
+    env_file:
+      - ../../envs/addresses.env
+      - ../../envs/alerts-schema.env
+      - ../../envs/database-schema.env
+      - ../../envs/secrets.env
+    entrypoint: ["npm", "run", "lint"]
