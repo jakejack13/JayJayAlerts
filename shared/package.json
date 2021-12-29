@@ -2,8 +2,13 @@
     "name": "jayjaytwitch-shared",
     "description": "A collection of libraries to be shared across nodes",
     "main": "Dockerfile",
+    "scripts": {
+        "lint": "npx eslint schema/**"
+    },
     "author": "Jacob Kerr",
     "license": "MIT",
-    "dependencies": {
+    "devDependencies": {
+        "eslint": "^8.5.0",
+        "eslint-config-google": "^0.14.0"
     }
 }

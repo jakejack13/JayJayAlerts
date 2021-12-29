@@ -3,4 +3,4 @@ WORKDIR /src/bot
 COPY . .
 EXPOSE ${ADD_BOTPORT}
 RUN npm install
-CMD ["npm","start"]
+ENTRYPOINT ["npm","start"]

@@ -4,4 +4,4 @@ COPY . .
 EXPOSE ${ADD_CLIENTBACKPORT}
 EXPOSE ${ADD_CLIENTFRONTPORT}
 RUN npm install
-CMD ["npm","start"]
+ENTRYPOINT ["npm","start"]

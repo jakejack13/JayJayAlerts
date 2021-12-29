@@ -1,3 +1,58 @@
-name: "Lint"
+name: Lint
 
 on: [push, pull_request]
+
+jobs:
+  lint_bot:
+    name: "Lint bot node"
+    runs-on: ubuntu-latest
+    steps: 
+      - name: Checkout repository code
+        uses: actions/checkout@v2
+      - run: docker build ./shared -t jayjaytwitch_shared
+        name: Build shared image
+      - run: docker build ./src/bot -t jayjaytwitch_bot
+        name: Build bot node
+      - run: docker run jayjaytwitch_bot "run lint"
+  lint_client:
+    name: Lint client node
+    runs-on: ubuntu-latest
+    steps: 
+      - name: Checkout repository code
+        uses: actions/checkout@v2
+      - run: docker build ./shared -t jayjaytwitch_shared
+        name: Build shared image
+      - run: docker build ./src/client -t jayjaytwitch_client
+        name: Build client node
+      - run: docker run jayjaytwitch_client "run lint"
+  lint_database:
+    name: Lint database node
+    runs-on: ubuntu-latest
+    steps: 
+      - name: Checkout repository code
+        uses: actions/checkout@v2
+      - run: docker build ./shared -t jayjaytwitch_shared
+        name: Build shared image
+      - run: docker build ./src/database -t jayjaytwitch_database
+        name: Build database node
+      - run: docker run jayjaytwitch_database --entrypoint "pylint app.py lib/**"
+  lint_website:
+    name: Lint website node
+    runs-on: ubuntu-latest
+    steps: 
+      - name: Checkout repository code
+        uses: actions/checkout@v2
+      - run: docker build ./shared -t jayjaytwitch_shared
+        name: Build shared image
+      - run: docker build ./src/website -t jayjaytwitch_website
+        name: Build website node
+      - run: docker run jayjaytwitch_website "run lint"
+  lint_shared:
+    name: Lint shared library
+    runs-on: ubuntu-latest
+    steps: 
+      - name: Checkout repository code
+        uses: actions/checkout@v2
+      - run: docker build ./shared -t jayjaytwitch_shared
+        name: Build shared image
+      - run: docker run jayjaytwitch_shared "run lint"
