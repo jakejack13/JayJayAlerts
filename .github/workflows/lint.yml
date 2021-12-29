@@ -11,7 +11,7 @@ jobs:
         uses: actions/checkout@v2
       - run: docker build ./shared -t jayjaytwitch_shared
         name: Build shared image
-      - run: docker compose -f ./bot-docker-compose.yml up 
+      - run: docker compose -f ./.github/workflows/bot-docker-compose.yml up 
         name: Lint bot node
   lint_client:
     name: Lint client node
@@ -21,7 +21,7 @@ jobs:
         uses: actions/checkout@v2
       - run: docker build ./shared -t jayjaytwitch_shared
         name: Build shared image
-      - run: docker compose -f ./client-docker-compose.yml up 
+      - run: docker compose -f ./.github/workflows/client-docker-compose.yml up 
         name: Lint client node
   lint_database:
     name: Lint database node
@@ -31,7 +31,7 @@ jobs:
         uses: actions/checkout@v2
       - run: docker build ./shared -t jayjaytwitch_shared
         name: Build shared image
-      - run: docker compose -f ./database-docker-compose.yml up 
+      - run: docker compose -f ./.github/workflows/database-docker-compose.yml up 
         name: Lint database node
   lint_website:
     name: Lint website node
@@ -41,7 +41,7 @@ jobs:
         uses: actions/checkout@v2
       - run: docker build ./shared -t jayjaytwitch_shared
         name: Build shared image
-      - run: docker compose -f ./website-docker-compose.yml up 
+      - run: docker compose -f ./.github/workflows/website-docker-compose.yml up 
         name: Lint website node
   lint_shared:
     name: Lint shared library
@@ -49,5 +49,5 @@ jobs:
     steps: 
       - name: Checkout repository code
         uses: actions/checkout@v2
-      - run: docker compose -f ./shared-docker-compose.yml up 
+      - run: docker compose -f ./.github/workflows/shared-docker-compose.yml up 
         name: Lint shared library
