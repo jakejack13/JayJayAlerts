@@ -5,8 +5,7 @@ const socket = io();
 /**
  * A class representing a queue of alerts to show on the webpage
  */
- class AlertQueue {
-
+class AlertQueue {
     /**
      * Constructs a new message queue
      * @param {HTMLElement} element - element to change
@@ -19,7 +18,7 @@ const socket = io();
 
     /**
      * Queues the message to be displayed
-     * @param {string} message - the message to queue 
+     * @param {string} message - the message to queue
      * @public
      */
     queueMessage(message) {
@@ -34,13 +33,18 @@ const socket = io();
      */
     displayMessages() {
         if (this.lock) {
-            setTimeout(() => {this.displayMessages();}, 1000);
+            setTimeout(() => {
+                this.displayMessages();
+            }, 1000);
         } else {
             this.lock = true;
             const message = this.messages.pop();
             this.element.innerText = message;
             // audio.play();
-            setTimeout(() => {this.element.innerText = ""; this.lock = false;}, 5000)
+            setTimeout(() => {
+                this.element.innerText = '';
+                this.lock = false;
+            }, 5000);
         }
     }
 }
