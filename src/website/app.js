@@ -31,7 +31,7 @@ io.on('connection', function(socket) {
             const req = http.request(
                 new URL(dbschema.fieldRequest(field)), (res) => {
                     res.on('data', (d) => {
-                        data[field] = d;
+                        data[field] = d.toString();
                     });
                 },
             );
