@@ -1,0 +1,11 @@
+version: "3.8"
+services:
+  database:
+    build: ../../src/database
+    ports:
+      - "8000:8000"
+    env_file:
+      - ../../envs/addresses.env
+      - ../../envs/alerts-schema.env
+      - ../../envs/database-schema.env
+    entrypoint: ["pylint"]

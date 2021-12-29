@@ -3,13 +3,15 @@
     "description": "This subrepository contains the main website used to adjust user configurations of alerts. It is responsible for converting UI input to a storable format and transmitting this data to the database.",
     "main": "app.js",
     "scripts": {
-        "start": "node app.js"
+        "start": "node app.js",
+        "lint": "npx eslint app.js"
     },
     "author": "Jacob Kerr",
     "license": "MIT",
-    "dependencies": {
-    },
     "devDependencies": {
-        "@types/node": "^16.11.6"
+        "@types/node": "^16.11.6",
+        "eslint": "^8.5.0",
+        "eslint-config-google": "^0.14.0",
+        "eslint-plugin-react": "^7.28.0"
     }
 }

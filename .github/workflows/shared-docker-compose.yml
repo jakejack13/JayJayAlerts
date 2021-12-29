@@ -1,0 +1,9 @@
+version: "3.8"
+services:
+  shared:
+    build: ../../shared
+    env_file:
+      - ../../envs/addresses.env
+      - ../../envs/alerts-schema.env
+      - ../../envs/database-schema.env
+    entrypoint: ["npm", "run", "lint"]

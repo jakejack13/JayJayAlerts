@@ -1,11 +1,10 @@
-//@ts-check
+// @ts-check
 
 /**
  * The list of hostnames and ports where each node is run and accessed
  * @author Jacob Kerr
  */
 
-const path = require('path');
 
 /**
  * The hostname for the database node

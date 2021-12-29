@@ -5,19 +5,19 @@
 import os
 
 
-FIELDS = os.environ.get("DB_FIELDS").split(",")
+FIELDS = (os.environ.get("DB_FIELDS") or "none").split(",")
 
-GET = os.environ.get("DB_GET")
+GET = os.environ.get("DB_GET") or "/get"
 """The request path for a GET request"""
 
-SET = os.environ.get("DB_SET")
+SET = os.environ.get("DB_SET") or "/set"
 """The request path for a SET request"""
 
-IS = os.environ.get("DB_IS")
+IS = os.environ.get("DB_IS") or "/is"
 """The request path for an IS request"""
 
-ADD = os.environ.get("DB_ADD")
+ADD = os.environ.get("DB_ADD") or "/add"
 """The request path for an ADD request"""
 
-FIELD = os.environ.get("DB_FIELD")
+FIELD = os.environ.get("DB_FIELD") or "/field"
 """The request path for a FIELD request"""

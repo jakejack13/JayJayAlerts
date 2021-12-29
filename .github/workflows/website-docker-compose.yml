@@ -1,0 +1,11 @@
+version: "3.8"
+services:
+  website:
+    build: ../../src/website
+    ports:
+      - "3001:3001"
+    env_file:
+      - ../../envs/addresses.env
+      - ../../envs/alerts-schema.env
+      - ../../envs/database-schema.env
+    entrypoint: ["npm", "run", "lint"]
