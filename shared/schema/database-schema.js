@@ -11,7 +11,7 @@ const addresses = require('./addresses');
 /**
  * The fields stored in the database
  */
-const FIELDS = process.env.DB_FIELDS.split(',');
+exports.FIELDS = process.env.DB_FIELDS.split(',');
 
 /**
  * The request path for a getValue request
@@ -80,10 +80,10 @@ exports.isRequest = function(field, value) {
  * @return {string|undefined} the full address of the request
  */
 exports.addRequest = function(values) {
-    if (values.length != FIELDS.length) return undefined;
+    if (values.length != exports.FIELDS.length) return undefined;
     let request = `http://${addresses.DATABASEHOSTNAME}:${addresses.DATABASEPORT}${ADD}?`;
     for (let i = 0; i < values.length; i++) {
-        request += `${FIELDS[i]}=${values[i]}&`;
+        request += `${exports.FIELDS[i]}=${values[i]}&`;
     }
     return request.slice(0, request.length-1);
 };

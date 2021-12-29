@@ -47,7 +47,7 @@ io.on('connection', function(socket) {
 });
 
 frontServer.listen(
-    addresses.CLIENTFRONTPORT, addresses.CLIENTFRONTHOSTNAME, () => {
-        console.log(`* Website running at http://${addresses.CLIENTFRONTHOSTNAME}:${addresses.CLIENTFRONTPORT}/`);
+    addresses.WEBSITEPORT, addresses.WEBSITEHOSTNAME, () => {
+        console.log(`* Website running at http://${addresses.WEBSITEHOSTNAME}:${addresses.WEBSITEPORT}/`);
     },
 );
