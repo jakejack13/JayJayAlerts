@@ -13,11 +13,12 @@
         "ecmaFeatures": {
             "jsx": true
         },
-        "ecmaVersion": 13
+        "ecmaVersion": "latest"
     },
     "plugins": [
         "react"
     ],
     "rules": {
+        "indent": ["error", 4]
     }
 }

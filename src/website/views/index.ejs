@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
+    <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'">
+    <title>JayJay</title>
+    <link rel="stylesheet" href="index.css" type="text/css">
+    <script src="/socket.io/socket.io.js"></script>
+  </head>
+  <body>
+    <form>
+      Channel: <input type="text" name="channel" id="channel"><br>
+      <button onclick="submitChannel()">Add</button>
+    </form>
+    <script src="/views/alert.js"></script>
+  </body>
+</html>

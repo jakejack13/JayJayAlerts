@@ -1,0 +1,10 @@
+body {
+    background-color: green;
+}
+
+#name {
+    opacity: 1;
+    color: #0055b0;
+    background-color: #ffffff;
+    display: inline;
+}
