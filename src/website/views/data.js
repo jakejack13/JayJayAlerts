@@ -1,7 +1,7 @@
 const socket = io();
 
-document.getElementById('channelButton').addEventListener(
-    'click', submitChannel,
+document.getElementById('channelForm').addEventListener(
+    'submit', submitChannel, false,
 );
 
 socket.on('client connected', () => {
@@ -18,7 +18,8 @@ socket.on('data sent', (dataString) => {
  * Submits channel to server
  */
 // eslint-disable-next-line
-function submitChannel() {
+function submitChannel(event) {
+    event.preventDefault();
     const channel = document.getElementById('channel').value;
     socket.emit('channel sent', channel);
     return false;

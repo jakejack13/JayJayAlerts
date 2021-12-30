@@ -42,7 +42,8 @@ io.on('connection', function(socket) {
         }
 
         const dataString = JSON.stringify(data);
-        socket.emit('data sent', [dataString]);
+        console.log(dataString);
+        socket.emit('data sent', dataString);
     });
 });
 
