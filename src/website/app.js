@@ -25,25 +25,19 @@ io.on('connection', function(socket) {
     socket.emit('client connected');
 
     socket.on('channel sent', function(channel) {
-        const data = {};
-
-        for (const field of dbschema.FIELDS) {
-            const req = http.request(
-                new URL(dbschema.fieldRequest(field)), (res) => {
-                    res.on('data', (d) => {
-                        data[field] = d.toString();
-                    });
-                },
-            );
-            req.on('error', (error) => {
-                console.error(error);
-            });
-            req.end();
-        }
-
-        const dataString = JSON.stringify(data);
-        console.log(dataString);
-        socket.emit('data sent', dataString);
+        const req = http.request(
+            new URL(dbschema.entryRequest(channel)), (res) => {
+                res.on('data', (d) => {
+                    const dataString = d.toString();
+                    console.log(dataString);
+                    socket.emit('data sent', dataString);
+                });
+            },
+        );
+        req.on('error', (error) => {
+            console.error(error);
+        });
+        req.end();
     });
 });
 

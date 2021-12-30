@@ -3,12 +3,13 @@
 @author Jacob Kerr"""
 
 import os
+import json
 from flask import Flask, request
 
 # pylint: disable=import-error
 from lib.storage import Database, database_factory
 # pylint: disable=import-error
-from lib.schema import GET, SET, IS, ADD, FIELD
+from lib.schema import GET, SET, IS, ADD, FIELD, ENTRY
 
 
 app = Flask(__name__)
@@ -76,6 +77,15 @@ def field_request():
     if value is None:
         return "Field not found", 406
     return f"{','.join(value)}", 200
+
+
+@app.route(ENTRY)
+def entry_request():
+    """Returns all of the values from the given entry"""
+    value = database.get_entry(request.args.get("channel"))
+    if value is None:
+        return "Field not found", 406
+    return json.dumps(value), 200
 
 
 if __name__ == "__main__":
