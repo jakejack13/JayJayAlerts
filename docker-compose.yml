@@ -29,7 +29,7 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - /Users/jakejack/Documents/JayJayTwitch/data/:/data/
+      - /Users/jakejack/Documents/JayJayAlerts/data/:/data/
     env_file:
       - ./envs/addresses.env
       - ./envs/alerts-schema.env

@@ -1,5 +1,5 @@
 {
-    "name": "jayjaytwitch-shared",
+    "name": "jayjayalerts-shared",
     "description": "A collection of libraries to be shared across nodes",
     "main": "Dockerfile",
     "scripts": {

@@ -1,4 +1,4 @@
 #!/bin/sh
 
-docker build ./shared -t jayjaytwitch_shared
-VOLUMEMOUNT="$(pwd)/data" docker compose up
+docker build ./shared -t jayjayalerts_shared
+docker compose up
