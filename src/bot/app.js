@@ -4,9 +4,9 @@
  * The entry point to hosting the bot node
  * @author Jacob Kerr
  */
-// eslint-disable-next-line no-unused-vars
-const _ = '';
 
+/** */
+// eslint-disable-next-line no-unused-vars
 const tmi = require('tmi.js');
 const http = require('http');
 

@@ -1,3 +1,12 @@
+// @ts-check
+/**
+ * The client end of the server socket used to process data requested from the
+ * user database
+ * @author Jacob Kerr
+ */
+
+/** */
+// @ts-ignore
 const socket = io();
 
 /**
@@ -20,6 +29,20 @@ socket.on('client connected', () => {
 });
 
 socket.on('fields sent', (fields) => {
+    fieldsSent(fields); // necessary to prevent Chrome text function bug
+});
+
+socket.on('data sent', (dataString) => {
+    dataSent(dataString);
+});
+
+
+/**
+ * Upon being sent fields, a form field is created for each field and added to
+ * the DOM
+ * @param {string} fields - the editable fields in the database
+ */
+function fieldsSent(fields) {
     fieldList = fields.split(',');
     const form = document.getElementById('fieldForm');
     for (const field of fieldList) {
@@ -31,15 +54,22 @@ socket.on('fields sent', (fields) => {
         label.appendChild(input);
         form.appendChild(label);
     }
-});
+}
 
-socket.on('data sent', (dataString) => {
+
+/**
+ * Upon being sent the entry data, the form fields are filled in with
+ * corresponding information
+ * @param {string} dataString - the JSON encoded string of entry data
+ */
+function dataSent(dataString) {
     const data = JSON.parse(dataString);
     for (const field of fieldList) {
         const input = document.getElementById(`${field}Field`);
+        // @ts-ignore
         input.value = data[field];
     }
-});
+}
 
 
 /**
@@ -49,6 +79,7 @@ socket.on('data sent', (dataString) => {
  */
 function submitChannel(event) {
     event.preventDefault();
+    // @ts-ignore
     const channel = document.getElementById('channel').value;
     socket.emit('channel sent', channel);
     return false;
@@ -65,6 +96,7 @@ function submitFields(event) {
     const data = {};
     for (const field of fieldList) {
         const input = document.getElementById(`${field}Field`);
+        // @ts-ignore
         data[field] = input.value;
     }
     socket.emit('values sent', JSON.stringify(data));
