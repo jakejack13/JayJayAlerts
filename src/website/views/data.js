@@ -23,9 +23,13 @@ socket.on('fields sent', (fields) => {
     fieldList = fields.split(',');
     const form = document.getElementById('fieldForm');
     for (const field of fieldList) {
+        const label = document.createElement('label');
+        label.id = `${field}Label`;
+        label.textContent = field;
         const input = document.createElement('input');
         input.id = `${field}Field`;
-        form.appendChild(input);
+        label.appendChild(input);
+        form.appendChild(label);
     }
 });
 
