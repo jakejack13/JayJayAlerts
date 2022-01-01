@@ -138,14 +138,34 @@ class Database:
             the field to pull the value from
 
         Returns
+        -------
         list[str] | None
-            the value in the field or undefined if the field does not exist"""
+            the values in the field or undefined if the field does not exist"""
         if field not in self.fields:
             return None
         result = []
         for entry in self.entries.values():
             result.append(entry[field])
         return result
+
+
+    def get_entry(self, entry_id: str) -> Union[dict[str,str], None]:
+        """Returns the list of values from the entry specified
+        
+        Params
+        ------
+        entry_id: str
+            the id of the entry to get
+        
+        Returns
+        -------
+        dict[str,str] | None
+            the key/value pairs in the entry or undefined if the entry does not
+            exist
+        """
+        if entry_id not in self.entries.keys():
+            return None
+        return self.entries[entry_id]
 
 
     def save(self) -> None:

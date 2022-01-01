@@ -10,8 +10,17 @@
     <script src="/socket.io/socket.io.js"></script>
   </head>
   <body>
-    <div id="channel" data-channel=<%= channel %>></div>
-    <p id="message"></p>
-    <script src="/views/alert.js"></script>
+    <div id="channelDiv">
+      <form id="channelForm">
+        Channel: <input type="text" name="channel" id="channel"><br>
+        <input type="submit" name="Submit" id="channelButton">
+      </form>
+    </div>
+    <div id="fieldDiv">
+      <form id="fieldForm">
+        <input type="submit" name="Submit" id="fieldButton">
+      </form>
+    </div>
+    <script src="/views/data.js"></script>
   </body>
 </html>

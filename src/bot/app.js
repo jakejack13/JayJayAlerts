@@ -4,9 +4,9 @@
  * The entry point to hosting the bot node
  * @author Jacob Kerr
  */
-// eslint-disable-next-line no-unused-vars
-const _ = '';
 
+/** */
+// eslint-disable-next-line no-unused-vars
 const tmi = require('tmi.js');
 const http = require('http');
 
@@ -93,14 +93,28 @@ const channelCallback = () => {
         message, userstate) {
         if (self) return;
 
-        const alertMessage = `${username} just subscribed!`;
+        let subMessage = '';
 
-        const req = http.request(new URL(
-            alschema.messageRequest(channel.substring(1), alertMessage),
-        ));
-        req.on('error', (error) => {
+        const subReq = http.request(new URL(
+            dbschema.getRequest(channel.substring(1), 'subMessage'),
+        ), (res) => {
+            res.on('data', (d) => {
+                subMessage = d.toString();
+            });
+        });
+        subReq.on('error', (error) => {
             console.error(error);
         });
-        req.end();
+        subReq.end();
+
+        const alertMessage = `${username} ${subMessage}`;
+
+        const alReq = http.request(new URL(
+            alschema.messageRequest(channel.substring(1), alertMessage),
+        ));
+        alReq.on('error', (error) => {
+            console.error(error);
+        });
+        alReq.end();
     }
 };

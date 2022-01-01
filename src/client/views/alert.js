@@ -1,3 +1,12 @@
+// @ts-check
+
+/**
+ * The client end of the server socket used to process alerts requested from
+ * the server
+ * @author Jacob Kerr
+ */
+
+// @ts-ignore
 const socket = io();
 // const audio = new Audio('/views/discord-notification.mp3');
 

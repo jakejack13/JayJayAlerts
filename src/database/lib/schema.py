@@ -21,3 +21,6 @@ ADD = os.environ.get("DB_ADD") or "/add"
 
 FIELD = os.environ.get("DB_FIELD") or "/field"
 """The request path for a FIELD request"""
+
+ENTRY = os.environ.get("DB_ENTRY") or "/entry"
+"""The request path for an ENTRY request"""
