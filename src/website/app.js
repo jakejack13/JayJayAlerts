@@ -24,12 +24,15 @@ app.get('/', function(req, res) {
 io.on('connection', function(socket) {
     socket.emit('client connected');
 
-    socket.on('channel sent', function(channel) {
+    socket.on('server connected', () => {
+        socket.emit('fields sent', dbschema.FIELDS.join(','));
+    });
+
+    socket.on('channel sent', (channel) => {
         const req = http.request(
             new URL(dbschema.entryRequest(channel)), (res) => {
                 res.on('data', (d) => {
                     const dataString = d.toString();
-                    console.log(dataString);
                     socket.emit('data sent', dataString);
                 });
             },
@@ -38,6 +41,24 @@ io.on('connection', function(socket) {
             console.error(error);
         });
         req.end();
+    });
+
+    socket.on('values sent', (values) => {
+        const data = JSON.parse(values);
+        for (const field of dbschema.FIELDS) {
+            const req = http.request(
+                new URL(dbschema.setRequest(data['channel'],
+                    field, data[field])), (res) => {
+                    res.on('data', (d) => {
+                        console.log(d);
+                    });
+                },
+            );
+            req.on('error', (error) => {
+                console.error(error);
+            });
+            req.end();
+        }
     });
 });
 
