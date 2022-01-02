@@ -46,7 +46,7 @@ const channelCallback = async () => {
         process.env.SEC_CLIENTID,
         process.env.SEC_CLIENTSECRET,
     );
-    const cryptoSecret = crypto.randomUUID();
+    const cryptoSecret = crypto.randomBytes(32).toString('hex');
     const apiClient = new ApiClient({authProvider});
     const listener = new EventSubListener(
         {
@@ -58,9 +58,12 @@ const channelCallback = async () => {
     await listener.listen();
 
     for (const channel of channels) {
-        listener.subscribeToChannelFollowEvents(channel, onFollowHandler);
+        listener.subscribeToChannelFollowEvents(
+            (await apiClient.users.getUserByName(channel)).id, onFollowHandler,
+        );
         listener.subscribeToChannelSubscriptionEvents(
-            channel, onSubscriptionHandler,
+            (await apiClient.users.getUserByName(channel)).id,
+            onSubscriptionHandler,
         );
     }
 
