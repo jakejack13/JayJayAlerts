@@ -1,4 +1,4 @@
-FROM jayjaytwitch_shared
+FROM jayjayalerts_shared
 WORKDIR /src/website
 COPY . .
 EXPOSE ${ADD_WEBSITEPORT}

@@ -9,7 +9,7 @@ jobs:
     steps: 
       - name: Checkout repository code
         uses: actions/checkout@v2
-      - run: docker build ./shared -t jayjaytwitch_shared
+      - run: docker build ./shared -t jayjayalerts_shared
         name: Build shared image
       - run: docker compose -f ./.github/docker/bot-docker-compose.yml up 
         name: Lint bot node
@@ -19,7 +19,7 @@ jobs:
     steps: 
       - name: Checkout repository code
         uses: actions/checkout@v2
-      - run: docker build ./shared -t jayjaytwitch_shared
+      - run: docker build ./shared -t jayjayalerts_shared
         name: Build shared image
       - run: docker compose -f ./.github/docker/client-docker-compose.yml up 
         name: Lint client node
@@ -29,7 +29,7 @@ jobs:
     steps: 
       - name: Checkout repository code
         uses: actions/checkout@v2
-      - run: docker build ./shared -t jayjaytwitch_shared
+      - run: docker build ./shared -t jayjayalerts_shared
         name: Build shared image
       - run: docker compose -f ./.github/docker/database-docker-compose.yml up 
         name: Lint database node
@@ -39,7 +39,7 @@ jobs:
     steps: 
       - name: Checkout repository code
         uses: actions/checkout@v2
-      - run: docker build ./shared -t jayjaytwitch_shared
+      - run: docker build ./shared -t jayjayalerts_shared
         name: Build shared image
       - run: docker compose -f ./.github/docker/website-docker-compose.yml up 
         name: Lint website node

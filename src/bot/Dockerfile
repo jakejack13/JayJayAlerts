@@ -1,4 +1,4 @@
-FROM jayjaytwitch_shared
+FROM jayjayalerts_shared
 WORKDIR /src/bot
 COPY . .
 EXPOSE ${ADD_BOTPORT}

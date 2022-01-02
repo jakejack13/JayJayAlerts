@@ -1,8 +1,8 @@
 {
-  "name": "jayjaytwitch",
+  "name": "jayjayalerts",
   "version": "0.0.0",
-  "description": "A Twitch bot for https://twitch.tv/JakeJack",
-  "main": "src/main.js",
+  "description": "A Twitch alerts, animations, and animations service, created for and by https://twitch.tv/JakeJack",
+  "main": "docker-compose.yml",
   "scripts": {
     "start": "./scripts/start.sh",
     "postinstall": "./scripts/postinstall.sh",
@@ -16,14 +16,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jakejack13/JayJayTwitch.git"
+    "url": "git+https://github.com/jakejack13/JayJayAlerts.git"
   },
   "author": "Jacob Kerr",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/jakejack13/JayJayTwitch/issues"
+    "url": "https://github.com/jakejack13/JayJayAlerts/issues"
   },
-  "homepage": "https://github.com/jakejack13/JayJayTwitch#readme",
+  "homepage": "https://github.com/jakejack13/JayJayAlerts#readme",
   "dependencies": {
     
   },
