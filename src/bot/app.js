@@ -6,9 +6,18 @@
  */
 
 /** */
+const {ClientCredentialsAuthProvider} = require('@twurple/auth');
+const {ApiClient} = require('@twurple/api');
+const {// DirectConnectionAdapter,
+    // TODO: Switch from ngrok to DirectConnectionAdapter with SSL on production
+    EventSubListener,
+} = require('@twurple/eventsub');
 // eslint-disable-next-line no-unused-vars
-const tmi = require('tmi.js');
+const eventsub = require('@twurple/eventsub');
+const {NgrokAdapter} = require('@twurple/eventsub-ngrok');
+
 const http = require('http');
+const crypto = require('crypto');
 
 const dbschema = require('../../shared/schema/database-schema');
 const alschema = require('../../shared/schema/alerts-schema');
@@ -32,89 +41,89 @@ req.on('error', (error) => {
 req.end();
 
 
-const channelCallback = () => {
-/** @type {tmi.Options} */
-    const opts = {
-        identity: {
-            username: process.env.SEC_BOTUSERNAME,
-            password: process.env.SEC_OAUTHTOKEN,
+const channelCallback = async () => {
+    const authProvider = new ClientCredentialsAuthProvider(
+        process.env.SEC_CLIENTID,
+        process.env.SEC_CLIENTSECRET,
+    );
+    const cryptoSecret = crypto.randomUUID();
+    const apiClient = new ApiClient({authProvider});
+    const listener = new EventSubListener(
+        {
+            apiClient,
+            adapter: new NgrokAdapter(),
+            secret: cryptoSecret,
         },
-        channels: channels,
-    };
+    );
+    await listener.listen();
 
-    // eslint-disable-next-line new-cap
-    const client = new tmi.client(opts);
-    client.on('connected', onConnectedHandler);
-    client.on('chat', onChatHandler);
-    client.on('subscription', onSubscriptionHandler);
-    client.connect();
-
-    /**
-     * Print connection information (address and port)
-     * @param {string} addr - the connected IP address
-     * @param {number} port - the connected port
-     */
-    function onConnectedHandler(addr, port) {
-        console.log(`* Connected to ${addr}:${port}`);
+    for (const channel of channels) {
+        listener.subscribeToChannelFollowEvents(channel, onFollowHandler);
+        listener.subscribeToChannelSubscriptionEvents(
+            channel, onSubscriptionHandler,
+        );
     }
 
 
     /**
-     *
-     * @param {string} channel
-     * @param {tmi.ChatUserstate} userstate
-     * @param {string} message
-     * @param {boolean} self
+     * Handles all follow events detected from registered channels
+     * @param {eventsub.EventSubChannelFollowEvent} event
      */
-    function onChatHandler(channel, userstate, message, self) {
-        if (self) return;
+    function onFollowHandler(event) {
+        const followReq = http.request(new URL(
+            dbschema.getRequest(event.broadcasterName, 'followMessage'),
+        ), (res) => {
+            res.on('data', (d) => {
+                const followMessage = d.toString();
 
-        const alertMessage = `${userstate['display-name']}: ${message}`;
+                const alertMessage = `${event.userDisplayName} \
+                ${followMessage}`;
 
-        const req = http.request(new URL(
-            alschema.messageRequest(channel.substring(1), alertMessage),
-        ));
-        req.on('error', (error) => {
+                const alReq = http.request(new URL(
+                    alschema.messageRequest(
+                        event.broadcasterName, alertMessage,
+                    ),
+                ));
+                alReq.on('error', (error) => {
+                    console.error(error);
+                });
+                alReq.end();
+            });
+        });
+        followReq.on('error', (error) => {
             console.error(error);
         });
-        req.end();
+        followReq.end();
     }
 
 
     /**
      * Handles all subscription events detected from registered channels
-     * @param {string} channel - the channel that was subscribed to
-     * @param {string} username - the name of the user who subscribed
-     * @param {tmi.SubMethods} methods
-     * @param {string} message - the message associated with the subscription
-     * @param {tmi.SubUserstate} userstate - the state of the user subscribing
+     * @param {eventsub.EventSubChannelSubscriptionEvent} event
      */
-    function onSubscriptionHandler(channel, username, methods,
-        message, userstate) {
-        if (self) return;
-
-        let subMessage = '';
-
+    function onSubscriptionHandler(event) {
         const subReq = http.request(new URL(
-            dbschema.getRequest(channel.substring(1), 'subMessage'),
+            dbschema.getRequest(event.broadcasterName, 'subMessage'),
         ), (res) => {
             res.on('data', (d) => {
-                subMessage = d.toString();
+                const subMessage = d.toString();
+
+                const alertMessage = `${event.userDisplayName} ${subMessage}`;
+
+                const alReq = http.request(new URL(
+                    alschema.messageRequest(
+                        event.broadcasterName, alertMessage,
+                    ),
+                ));
+                alReq.on('error', (error) => {
+                    console.error(error);
+                });
+                alReq.end();
             });
         });
         subReq.on('error', (error) => {
             console.error(error);
         });
         subReq.end();
-
-        const alertMessage = `${username} ${subMessage}`;
-
-        const alReq = http.request(new URL(
-            alschema.messageRequest(channel.substring(1), alertMessage),
-        ));
-        alReq.on('error', (error) => {
-            console.error(error);
-        });
-        alReq.end();
     }
 };

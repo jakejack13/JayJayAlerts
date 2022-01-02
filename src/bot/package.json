@@ -9,11 +9,12 @@
     "author": "Jacob Kerr",
     "license": "MIT",
     "dependencies": {
-        "tmi.js": "^1.8.5"
+        "@twurple/api": "^5.0.13",
+        "@twurple/eventsub": "^5.0.13",
+        "@twurple/eventsub-ngrok": "^5.0.13"
     },
     "devDependencies": {
         "@types/node": "^16.11.6",
-        "@types/tmi.js": "^1.8.0",
         "eslint": "^8.5.0",
         "eslint-config-google": "^0.14.0"
     }
