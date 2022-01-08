@@ -9,45 +9,7 @@ jobs:
     steps: 
       - name: Checkout repository code
         uses: actions/checkout@v2
-      - run: docker build ./shared -t jayjayalerts_shared
+      - run: docker build . -t jayjayalerts
         name: Build shared image
-      - run: docker compose -f ./.github/docker/bot-docker-compose.yml up 
+      - run: docker run --env SEC_CLIENTID --env SEC_CLIENTSECRET --entrypoint "npm run lint" jayjayalerts
         name: Lint bot node
-  lint_client:
-    name: Lint client node
-    runs-on: ubuntu-latest
-    steps: 
-      - name: Checkout repository code
-        uses: actions/checkout@v2
-      - run: docker build ./shared -t jayjayalerts_shared
-        name: Build shared image
-      - run: docker compose -f ./.github/docker/client-docker-compose.yml up 
-        name: Lint client node
-  lint_database:
-    name: Lint database node
-    runs-on: ubuntu-latest
-    steps: 
-      - name: Checkout repository code
-        uses: actions/checkout@v2
-      - run: docker build ./shared -t jayjayalerts_shared
-        name: Build shared image
-      - run: docker compose -f ./.github/docker/database-docker-compose.yml up 
-        name: Lint database node
-  lint_website:
-    name: Lint website node
-    runs-on: ubuntu-latest
-    steps: 
-      - name: Checkout repository code
-        uses: actions/checkout@v2
-      - run: docker build ./shared -t jayjayalerts_shared
-        name: Build shared image
-      - run: docker compose -f ./.github/docker/website-docker-compose.yml up 
-        name: Lint website node
-  lint_shared:
-    name: Lint shared library
-    runs-on: ubuntu-latest
-    steps: 
-      - name: Checkout repository code
-        uses: actions/checkout@v2
-      - run: docker compose -f ./.github/docker/shared-docker-compose.yml up 
-        name: Lint shared library
