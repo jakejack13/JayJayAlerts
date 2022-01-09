@@ -1,9 +1,15 @@
 // @ts-check
 
 const http = require('http');
+const crypto = require('crypto');
 const express = require('express');
 const path = require('path');
 const socketio = require('socket.io');
+const {ClientCredentialsAuthProvider} = require('@twurple/auth');
+const {ApiClient} = require('@twurple/api');
+const {EventSubMiddleware} = require('@twurple/eventsub');
+const winston = require('winston');
+const expressWinston = require('express-winston');
 
 const userWeb = require('./lib/userWebsite');
 const alertsWeb = require('./lib/alertsWebsite');
@@ -11,6 +17,9 @@ const alertsWeb = require('./lib/alertsWebsite');
 // Constants
 const DEP_HOSTNAME = process.env.DEP_HOSTNAME || 'localhost';
 const DEP_PORT = parseInt(process.env.DEP_PORT) || 3000;
+const SEC_CLIENTID = process.env.SEC_CLIENTID;
+const SEC_CLIENTSECRET = process.env.SEC_CLIENTSECRET;
+
 
 // Creating webserver for all tasks
 const app = express();
@@ -19,7 +28,34 @@ const server = http.createServer(app);
 // @ts-ignore
 const io = socketio(server);
 
+// Creating Twitch API access
+const authProvider = new ClientCredentialsAuthProvider(SEC_CLIENTID,
+    SEC_CLIENTSECRET);
+const apiClient = new ApiClient({authProvider});
+const middleware = new EventSubMiddleware({
+    apiClient,
+    hostName: DEP_HOSTNAME,
+    pathPrefix: '/twitch',
+    secret: crypto.randomBytes(32).toString('hex'),
+});
+
+
 // Setting express server settings
+app.use(expressWinston.logger({
+    transports: [
+        new winston.transports.Console(),
+    ],
+    format: winston.format.combine(
+        winston.format.colorize(),
+        winston.format.json(),
+    ),
+    meta: true,
+    expressFormat: true,
+    colorize: true,
+    ignoreRoute: (req, res) => {
+        return false;
+    },
+}));
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, '/views/'));
 app.use('/views', express.static('views'));
@@ -41,7 +77,8 @@ io.on('connection', function(socket) {
 
     // On channel sent, request data from database
     socket.on('user - channel sent', (channel) => {
-        userWeb.socketChannelSent(socket, channel, app);
+        userWeb.socketChannelSent(socket, channel, app, middleware,
+            apiClient, sockets);
     });
 
     socket.on('user - values sent', (dataString) => {
@@ -64,13 +101,12 @@ app.get('/', (req, res) => {
 });
 
 
-server.listen(DEP_PORT, DEP_HOSTNAME, () => {
-    console.log(`* Website running at http://${DEP_HOSTNAME}:${DEP_PORT}/`);
-});
+(async () => {
+    await middleware.apply(app);
 
-// function sendAlert(channel, message) {
-//     if (!sockets.has(channel)) return;
-//     for (const socket of sockets.get(channel)) {
-//         socket.emit('message', message);
-//     }
-// }
+    server.listen(DEP_PORT, DEP_HOSTNAME, async () => {
+        console.log(`* Website running at http://${DEP_HOSTNAME}:${DEP_PORT}/`);
+
+        await middleware.markAsReady();
+    });
+})();
