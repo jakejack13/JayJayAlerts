@@ -62,9 +62,9 @@ const channel = document.getElementById('channel').dataset.channel;
 const queue = new AlertQueue(document.getElementById('message'));
 
 socket.on('client connected', () => {
-    socket.emit('channel sent', channel);
+    socket.emit('alerts - channel sent', channel);
 });
 
-socket.on('message', function(message) {
+socket.on('alerts - message', function(message) {
     queue.queueMessage(message);
 });

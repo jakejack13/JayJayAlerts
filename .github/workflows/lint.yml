@@ -13,3 +13,6 @@ jobs:
         name: Build shared image
       - run: docker run --env SEC_CLIENTID --env SEC_CLIENTSECRET --entrypoint "npm run lint" jayjayalerts
         name: Lint bot node
+        env:
+          SEC_CLIENTID: ${{ secrets.SEC_CLIENTID }}
+          SEC_CLIENTSECRET: ${{ secrets.SEC_CLIEN

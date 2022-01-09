@@ -5,7 +5,8 @@
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
-    "lint": "npx eslint app.js lib/*/*.js"
+    "local": "node -r dotenv/config app.js",
+    "lint": "npx eslint app.js lib/*.js"
   },
   "repository": {
     "type": "git",
@@ -18,17 +19,18 @@
   },
   "homepage": "https://github.com/jakejack13/JayJayAlerts#readme",
   "dependencies": {
-    "ejs": "^3.1.6",
-    "express": "^4.17.1",
-    "socket.io": "^4.4.0",
     "@twurple/api": "^5.0.13",
     "@twurple/eventsub": "^5.0.13",
-    "@twurple/eventsub-ngrok": "^5.0.13"
+    "@twurple/eventsub-ngrok": "^5.0.13",
+    "dotenv": "^10.0.0",
+    "ejs": "^3.1.6",
+    "express": "^4.17.1",
+    "socket.io": "^4.4.0"
   },
   "devDependencies": {
-    "@types/socket.io": "^3.0.2",
     "@types/express": "^4.17.13",
     "@types/node": "^16.11.6",
+    "@types/socket.io": "^3.0.2",
     "eslint": "^8.5.0",
     "eslint-config-google": "^0.14.0",
     "eslint-plugin-react": "^7.28.0"

@@ -13,7 +13,8 @@ const socket = io();
  * List of fields in the database
  * @type {string[]}
  */
-let fieldList = undefined;
+// @ts-ignore
+let fieldList;
 
 document.getElementById('channelForm').addEventListener(
     'submit', submitChannel, false,
@@ -25,14 +26,16 @@ document.getElementById('fieldForm').addEventListener(
 
 
 socket.on('client connected', () => {
-    socket.emit('server connected');
+    socket.emit('user - connected');
 });
 
-socket.on('fields sent', (fields) => {
+socket.on('user - fields sent', (fields) => {
+    console.debug(`Fields: ${fields}`);
     fieldsSent(fields); // necessary to prevent Chrome text function bug
 });
 
-socket.on('data sent', (dataString) => {
+socket.on('user - data sent', (dataString) => {
+    console.debug(`Data: ${dataString}`);
     dataSent(dataString);
 });
 
@@ -81,7 +84,7 @@ function submitChannel(event) {
     event.preventDefault();
     // @ts-ignore
     const channel = document.getElementById('channel').value;
-    socket.emit('channel sent', channel);
+    socket.emit('user - channel sent', channel);
     return false;
 };
 
@@ -99,6 +102,6 @@ function submitFields(event) {
         // @ts-ignore
         data[field] = input.value;
     }
-    socket.emit('values sent', JSON.stringify(data));
+    socket.emit('user - values sent', JSON.stringify(data));
     return false;
 };
