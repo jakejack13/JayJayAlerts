@@ -13,7 +13,6 @@ const socket = io();
  * List of fields in the database
  * @type {string[]}
  */
-// @ts-ignore
 let fieldList;
 
 document.getElementById('channelForm').addEventListener(
