@@ -3,8 +3,8 @@ name: Lint
 on: push
 
 jobs:
-  lint_bot:
-    name: "Lint bot node"
+  lint:
+    name: "Lint application"
     runs-on: ubuntu-latest
     steps: 
       - name: Checkout repository code
