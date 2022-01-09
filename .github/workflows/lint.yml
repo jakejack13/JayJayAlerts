@@ -15,4 +15,4 @@ jobs:
         name: Lint bot node
         env:
           SEC_CLIENTID: ${{ secrets.SEC_CLIENTID }}
-          SEC_CLIENTSECRET: ${{ secrets.SEC_CLIEN
+          SEC_CLIENTSECRET: ${{ secrets.SEC_CLIENT }}
