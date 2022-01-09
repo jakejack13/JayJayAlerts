@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node app.js",
     "local": "node -r dotenv/config app.js",
-    "lint": "npx eslint app.js lib/*.js"
+    "lint": "npx eslint app.js lib/*.js",
+    "build": "docker build . -t jayjayalerts"
   },
   "repository": {
     "type": "git",
