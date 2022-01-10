@@ -1,4 +1,8 @@
 // @ts-check
+/**
+ * The entrypoint to JayJayAlerts
+ * @author Jacob Kerr
+ */
 
 const http = require('http');
 const crypto = require('crypto');
@@ -8,8 +12,6 @@ const socketio = require('socket.io');
 const {ClientCredentialsAuthProvider} = require('@twurple/auth');
 const {ApiClient} = require('@twurple/api');
 const {EventSubMiddleware} = require('@twurple/eventsub');
-const winston = require('winston');
-const expressWinston = require('express-winston');
 
 const userWeb = require('./lib/userWebsite');
 const alertsWeb = require('./lib/alertsWebsite');
@@ -41,21 +43,6 @@ const middleware = new EventSubMiddleware({
 
 
 // Setting express server settings
-app.use(expressWinston.logger({
-    transports: [
-        new winston.transports.Console(),
-    ],
-    format: winston.format.combine(
-        winston.format.colorize(),
-        winston.format.json(),
-    ),
-    meta: true,
-    expressFormat: true,
-    colorize: true,
-    ignoreRoute: (req, res) => {
-        return false;
-    },
-}));
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, '/views/'));
 app.use('/views', express.static('views'));
