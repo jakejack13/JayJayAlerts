@@ -7,6 +7,7 @@
 const http = require('http');
 const crypto = require('crypto');
 const express = require('express');
+const favicon = require('serve-favicon');
 const path = require('path');
 const socketio = require('socket.io');
 const {ClientCredentialsAuthProvider} = require('@twurple/auth');
@@ -46,6 +47,7 @@ const middleware = new EventSubMiddleware({
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, '/views/'));
 app.use('/views', express.static('views'));
+app.use(favicon(path.join(__dirname, '/views/favicon.ico')));
 
 /** @type {Map<string, socketio.Socket[]>} */
 const sockets = new Map();
