@@ -6,6 +6,7 @@
  * @author Jacob Kerr
  */
 
+/** */
 // @ts-ignore
 const socket = io();
 // const audio = new Audio('/views/discord-notification.mp3');
