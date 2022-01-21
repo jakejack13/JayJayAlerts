@@ -3,51 +3,16 @@ name: Lint
 on: push
 
 jobs:
-  lint_bot:
-    name: "Lint bot node"
+  lint:
+    name: "Lint application"
     runs-on: ubuntu-latest
     steps: 
       - name: Checkout repository code
         uses: actions/checkout@v2
-      - run: docker build ./shared -t jayjayalerts_shared
-        name: Build shared image
-      - run: docker compose -f ./.github/docker/bot-docker-compose.yml up 
-        name: Lint bot node
-  lint_client:
-    name: Lint client node
-    runs-on: ubuntu-latest
-    steps: 
-      - name: Checkout repository code
-        uses: actions/checkout@v2
-      - run: docker build ./shared -t jayjayalerts_shared
-        name: Build shared image
-      - run: docker compose -f ./.github/docker/client-docker-compose.yml up 
-        name: Lint client node
-  lint_database:
-    name: Lint database node
-    runs-on: ubuntu-latest
-    steps: 
-      - name: Checkout repository code
-        uses: actions/checkout@v2
-      - run: docker build ./shared -t jayjayalerts_shared
-        name: Build shared image
-      - run: docker compose -f ./.github/docker/database-docker-compose.yml up 
-        name: Lint database node
-  lint_website:
-    name: Lint website node
-    runs-on: ubuntu-latest
-    steps: 
-      - name: Checkout repository code
-        uses: actions/checkout@v2
-      - run: docker build ./shared -t jayjayalerts_shared
-        name: Build shared image
-      - run: docker compose -f ./.github/docker/website-docker-compose.yml up 
-        name: Lint website node
-  lint_shared:
-    name: Lint shared library
-    runs-on: ubuntu-latest
-    steps: 
-      - name: Checkout repository code
-        uses: actions/checkout@v2
-      - run: docker compose -f ./.github/docker/shared-docker-compose.yml up 
-        name: Lint shared library
+      - run: npm run build
+        name: Build Docker image
+      - run: docker run --env SEC_CLIENTID --env SEC_CLIENTSECRET --entrypoint /.github/scripts/entrypoint.sh jayjayalerts
+        name: Lint application
+        env:
+          SEC_CLIENTID: ${{ secrets.SEC_CLIENTID }}
+          SEC_CLIENTSECRET: ${{ secrets.SEC_CLIENT }}

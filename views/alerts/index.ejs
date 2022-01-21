@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
+    <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'">
+    <title>JayJay</title>
+    <link rel="stylesheet" href="/views/alerts/index.css" type="text/css">
+    <script src="/socket.io/socket.io.js"></script>
+  </head>
+  <body>
+    <div id="channel" data-channel=<%= channel %>></div>
+    <p id="message"></p>
+    <script src="/views/alerts/alert.js"></script>
+  </body>
+</html>
