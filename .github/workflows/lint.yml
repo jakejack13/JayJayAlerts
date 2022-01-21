@@ -10,9 +10,9 @@ jobs:
       - name: Checkout repository code
         uses: actions/checkout@v2
       - run: npm run build
-        name: Build shared image
+        name: Build Docker image
       - run: docker run --env SEC_CLIENTID --env SEC_CLIENTSECRET --entrypoint /.github/scripts/entrypoint.sh jayjayalerts
-        name: Lint bot node
+        name: Lint application
         env:
           SEC_CLIENTID: ${{ secrets.SEC_CLIENTID }}
           SEC_CLIENTSECRET: ${{ secrets.SEC_CLIENT }}
