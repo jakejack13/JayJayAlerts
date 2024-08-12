@@ -28,6 +28,6 @@
     
   },
   "devDependencies": {
-    "mocha": "^10.5.1"
+    "mocha": "^10.7.3"
   }
 }
