@@ -8,7 +8,7 @@
     "author": "Jacob Kerr",
     "license": "MIT",
     "devDependencies": {
-        "eslint": "^9.39.2",
+        "eslint": "^10.0.0",
         "eslint-config-google": "^0.14.0"
     }
 }
